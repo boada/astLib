@@ -86,9 +86,10 @@ def rms(dataList):
     @return: root mean square
 
     """
-    dataListSq = []
-    for item in dataList:
-        dataListSq.append(math.pow(item, 2))
+#    dataListSq = []
+#    for item in dataList:
+#        dataListSq.append(math.pow(item, 2))
+    dataListSq = [math.pow(item, 2) for item in dataList]
     listMeanSq = mean(dataListSq)
     rms = math.sqrt(listMeanSq)
 
@@ -942,11 +943,12 @@ def bootstrap(data, statistic, resamples=1000, alpha=0.05, **args):
     @return: (Lower Interval, Upper Interval)
 
     """
-    from numpy.random import choice
-    from numpy import sort
+    #from numpy.random import choice
+    #from numpy import sort
 
-    samples = choice(data, size=(resamples, len(data)), replace=True)
-    stat = sort([statistic(row, **args) for row in samples])
+    samples = numpy.randomchoice(data, size=(resamples, len(data)),
+            replace=True)
+    stat = numpy.sort([statistic(row, **args) for row in samples])
     return (stat[int((alpha/2.0) * resamples)],
             stat[int((1-alpha/2.0) * resamples)])
 
@@ -1000,4 +1002,51 @@ def runningStatistic(x, y, statistic='mean', binNumber=10):
         running = [statistic(y[index==k]) for k in range(binNumber)]
 
     return running
+
+#-----------------------------------------------------------------------------
+
+def slice_sampler(px, N=1, x=None):
+    """ Provides N samples from a user-defined discreet distribution.
+
+    >>> slice_sampler(px, N=1, x=None)
+
+    If x=None (default) or if len(x) != len(px), it will return an rray of
+    intergers between 0 and len(px)-1. If x is given, it will return the
+    samples from x according to the distribution px.
+
+    Originally written by Adam Laiacano, 2011
+
+    @type px: numpy array or list
+    @param px: A discreet probability distribution
+    @type N: int
+    @param N: The number of samples to return, default is 1
+    @type x: numpy array or list
+    @param x: Optional array/list of observation values to return, where
+    prob(x) = px
+    @rtype: numpy array
+    @rparam: The desired number of samples drawn from the distribution
+
+    """
+
+    values = numpy.zeros(N, dtype=numpy.int)
+    samples = numpy.arange(len(px))
+    px = numpy.array(px) / (1.*sum(px))
+    u = uniform(0, max(px))
+    for n in xrange(N):
+        included = px>=u
+        choice = random.sample(range(numpy.sum(included)), 1)[0]
+        values[n] = samples[included][choice]
+        u = uniform(0, px[included][choice])
+
+    if len(x) == len(px):
+        x=numpy.array(x)
+        values = x[values]
+    else:
+        print("px and x are different lengths. ",
+            "Returning index locations for px.")
+    if N == 1:
+        return values[0]
+    return values
+
+
 
