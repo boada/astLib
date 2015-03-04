@@ -8,7 +8,8 @@ U{http://astlib.sourceforge.net}
 
 The focus in this module is at present on calculations of distances in a given
 cosmology. The parameters for the cosmological model are set using the
-variables OMEGA_M0, OMEGA_L0, OMEGA_R0, H0 in the module namespace (see below for details).
+variables OMEGA_M0, OMEGA_L0, OMEGA_R0, H0 in the module namespace (see below
+for details).
 
 @var OMEGA_M0: The matter density parameter at z=0.
 @type OMEGA_M0: float
