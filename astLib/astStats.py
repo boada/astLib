@@ -1028,15 +1028,17 @@ def slice_sampler(px, N=1, x=None):
 
     """
 
+    from random import sample
+
     values = numpy.zeros(N, dtype=numpy.int)
     samples = numpy.arange(len(px))
     px = numpy.array(px) / (1.*sum(px))
-    u = uniform(0, max(px))
+    u = numpy.random.uniform(0, max(px))
     for n in xrange(N):
         included = px>=u
-        choice = random.sample(range(numpy.sum(included)), 1)[0]
+        choice = sample(range(numpy.sum(included)), 1)[0]
         values[n] = samples[included][choice]
-        u = uniform(0, px[included][choice])
+        u = numpy.random.uniform(0, px[included][choice])
 
     if len(x) == len(px):
         x=numpy.array(x)
