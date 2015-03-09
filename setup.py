@@ -71,17 +71,22 @@ setup(name='astLib',
     classifiers=['Development Status :: 5 - Production/Stable',
             'Environment :: Console',
             'Intended Audience :: Science/Research',
-            'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
+            'License :: OSI Approved :: GNU Library or Lesser General Public
+            License (LGPL)',
             'Natural Language :: English',
             'Operating System :: POSIX',
             'Programming Language :: Python',
             'Topic :: Scientific/Engineering :: Astronomy',
             'Topic :: Software Development :: Libraries'],
-    description='A set of python modules for producing simple plots, statistics, common calculations, coordinate conversions, and manipulating FITS images with World Coordinate System (WCS) information.',
-    long_description="""astLib is a set of Python modules that provides some tools for research astronomers. It can be
-    used for simple plots, statistics, common calculations, coordinate conversions, and manipulating FITS images
-    with World Coordinate System (WCS) information through PyWCSTools - a simple wrapping of WCSTools by Doug Mink.
-    PyWCSTools is distributed (and developed) as part of astLib.""",
+    description='A set of python modules for producing simple plots,
+    statistics, common calculations, coordinate conversions, and manipulating
+    FITS images with World Coordinate System (WCS) information.',
+    long_description="""astLib is a set of Python modules that provides some
+    tools for research astronomers. It can be used for simple plots,
+    statistics, common calculations, coordinate conversions, and manipulating
+    FITS images with World Coordinate System (WCS) information through
+    PyWCSTools - a simple wrapping of WCSTools by Doug Mink. PyWCSTools is
+    distributed (and developed) as part of astLib.""",
     packages=['astLib', 'PyWCSTools'],
     package_data={'astLib': ['data/*']},
     cmdclass={"build_ext": build_PyWCSTools_ext},
