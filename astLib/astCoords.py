@@ -230,6 +230,62 @@ def decimal2dms(decDeg, delimiter):
         return sDeg+delimiter+sMins+delimiter+sSecs
 
 #-----------------------------------------------------------------------------
+def eq2cart(RA, DEC, r):
+    """
+    Convert Equatorial coordinates to Cartesian coordinates. Return a tuple
+    (x, y, z) in the same unit of the input distance. This is the inverse of
+    cart2eq.
+
+    @type RA: float
+    @param RA: Right Ascension in decimal degrees
+    @type DEC: float
+    @param DEC: Declination in decimal degrees
+    @type r: float
+    @param: Distance to the object.
+    @rtype: tuple
+    @return: Tuple of (x, y, z) in same unit as the input distance.
+
+    """
+
+    RA = numpy.radians(RA)
+    DEC = numpy.radians(DEC)
+
+    x = r * numpy.cos(RA) * numpy.cos(DEC)
+    y = r * numpy.sin(RA) * numpy.cos(DEC)
+    z = r * numpy.sin(DEC)
+
+    return x, y, z
+
+#-----------------------------------------------------------------------------
+def cart2eq(x, y, z):
+    """
+    Convert Cartesian coordinates to Equatorial coordinates. Returns a tuple of
+    (RA, DEC, r), with RA and DEC given in decimal degrees and r in the same
+    unit as the input.
+
+    @type x: float
+    @param x: x coordinate
+    @type y: float
+    @param y: x coordinate
+    @type z: float
+    @param z: x coordinate
+    @rtype: tuple
+    @return: Tuple of (RA, DEC, r)
+
+    """
+
+    r = numpy.sqrt(numpy.power(x,2) + numpy.power(y,2) + numpy.power(z,2))
+    ra = numpy.arctan2(y, x)
+    ra[ra < 0] = 2.0 * numpy.pi + ra[ra < 0]
+    #ra = ra if ra >= 0 else (2.0 * numpy.pi + ra)
+    dec = numpy.arcsin(z / r)
+
+    ra = numpy.degrees(ra)
+    dec = numpy.degrees(dec)
+
+    return ra, dec, r
+
+#-----------------------------------------------------------------------------
 def calcAngSepDeg(RADeg1, decDeg1, RADeg2, decDeg2):
     """Calculates the angular separation of two positions on the sky (specified
     in decimal degrees) in decimal degrees, assuming a tangent plane projection
@@ -437,4 +493,5 @@ def calcRADecSearchBox(RADeg, decDeg, radiusSkyDeg):
     decMin = results[3]
 
     return [RAMin, RAMax, decMin, decMax]
+
 
