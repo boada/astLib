@@ -1,6 +1,6 @@
 /*** File libwcs/wcs.h
  *** September 9, 2011
- *** By Doug Mink, dmink@cfa.harvard.edu
+ *** By Jessica Mink, jmink@cfa.harvard.edu
  *** Harvard-Smithsonian Center for Astrophysics
  *** Copyright (C) 1994-2011
  *** Smithsonian Astrophysical Observatory, Cambridge, MA, USA
@@ -20,8 +20,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     Correspondence concerning WCSTools should be addressed as follows:
-           Internet email: dmink@cfa.harvard.edu
-           Postal address: Doug Mink
+           Internet email: jmink@cfa.harvard.edu
+           Postal address: Jessica Mink
                            Smithsonian Astrophysical Observatory
                            60 Garden St.
                            Cambridge, MA 02138 USA
@@ -120,11 +120,11 @@ struct WorldCoor {
   int		detector;	/* Instrument detector number */
   char		instrument[32];	/* Instrument name */
   char		ctype[9][9];	/* Values of CTYPEn keywords */
-  char		c1type[16];	/*  1st coordinate type code:
+  char		c1type[9];	/*  1st coordinate type code:
 					RA--, GLON, ELON */
-  char		c2type[16];	/*  2nd coordinate type code:
+  char		c2type[9];	/*  2nd coordinate type code:
 					DEC-, GLAT, ELAT */
-  char		ptype[16];	/*  projection type code:
+  char		ptype[9];	/*  projection type code:
 				    SIN, TAN, ARC, NCP, GLS, MER, AIT, etc */
   char		units[9][32];	/* Units if LINEAR */
   char		radecsys[32];	/* Reference frame: FK4, FK4-NO-E, FK5, GAPPT*/

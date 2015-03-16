@@ -1,8 +1,8 @@
 /*** File libwcs/fitsfile.c
- *** March 31, 2010
- *** By Doug Mink, dmink@cfa.harvard.edu
+ *** September 15, 2011
+ *** By Jessica Mink, jmink@cfa.harvard.edu
  *** Harvard-Smithsonian Center for Astrophysics
- *** Copyright (C) 1996-2010
+ *** Copyright (C) 1996-2011
  *** Smithsonian Astrophysical Observatory, Cambridge, MA, USA
 
     This library is free software; you can redistribute it and/or
@@ -20,8 +20,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     Correspondence concerning WCSTools should be addressed as follows:
-           Internet email: dmink@cfa.harvard.edu
-           Postal address: Doug Mink
+           Internet email: jmink@cfa.harvard.edu
+           Postal address: Jessica Mink
                            Smithsonian Astrophysical Observatory
                            60 Garden St.
                            Cambridge, MA 02138 USA
@@ -87,15 +87,15 @@
 
 static int verbose=0;		/* Print diagnostics */
 static char fitserrmsg[80];
-static int fitsinherit = 1;		/* Append primary header to extension header */
+static int fitsinherit = 1;	/* Append primary header to extension header */
 void
 setfitsinherit (inh)
 int inh;
 {fitsinherit = inh; return;}
 
-static int ibhead = 0;		/* Number of bytes read before header starts */
+static off_t ibhead = 0;	/* Number of bytes read before header starts */
 
-int
+off_t
 getfitsskip()
 {return (ibhead);}
 
@@ -545,7 +545,8 @@ int	*nbhead;	/* Number of bytes before start of data (returned) */
     int fd;
     char *header;	/* FITS image header (filled) */
     int nbytes, i, ndiff;
-    int nbr, irec, offset;
+    int nbr, irec;
+    off_t offset;
     char *mwcs;		/* Pointer to WCS name separated by % */
     char *headstart;
     char *newhead;
@@ -641,7 +642,8 @@ int	nlog;		/* Note progress mod this rows */
     int fd;		/* File descriptor */
     int nbimage, naxis1, naxis2, bytepix, nbread;
     int bitpix, naxis, nblocks, nbytes, nbr;
-    int x1, y1, nbline, impos, nblin, nyleft;
+    int x1, y1, nbline, nyleft;
+    off_t impos, nblin;
     char *image, *imline, *imlast;
     int ilog = 0;
     int row;
@@ -2091,15 +2093,15 @@ char    *filename;      /* Name of file for which to find size */
     if (strchr (filename, '='))
 	return (0);
 
-    /* Then check file extension */
-    else if (strsrch (filename, ".fit") ||
-	strsrch (filename, ".fits") ||
-	strsrch (filename, ".fts"))
-	return (1);
-
     /* Check for stdin (input from pipe) */
     else if (!strcasecmp (filename,"stdin"))
 	return (1);
+
+    /* Then check file extension
+    else if (strsrch (filename, ".fit") ||
+	strsrch (filename, ".fits") ||
+	strsrch (filename, ".fts"))
+	return (1); */
 
     /* If no FITS file extension, try opening the file */
     else {
@@ -2295,8 +2297,12 @@ char *from, *last, *to;
  * Sep 18 2009	In fitswexhead() write to error string instead of stderr
  * Sep 22 2009	In fitsrthead(), fix lengths for ASCII numeric table entries
  * Sep 25 2009	Add subroutine moveb() and fix calls to it
- * Sep 25 2009	Fix several small errors found by Douglas Burke
+ * Sep 25 2009	Fix several small errors found by Jessicalas Burke
  *
  * Mar 29 2010	In fitswhead(), always pad blocks to 2880 bytes with spaces
  * Mar 31 2010	In fitsrhead(), fix bug reading long primary headers
+ *
+ * Sep 15 2011	In fitsrsect() declare impos and nblin off_t
+ * Sep 15 2011	In fitsrtail() declare offset off_t
+ * Sep 15 2011	Declare global variable ibhead off_t
  */
