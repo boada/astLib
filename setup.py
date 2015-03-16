@@ -14,25 +14,25 @@ import distutils.sysconfig
 from pkg_resources import require
 
 topDir = os.getcwd()
-sourceDir = "PyWCSTools"+os.path.sep+"wcssubs-3.8.4"+os.path.sep
+sourceDir = "PyWCSTools"+os.path.sep+"wcssubs-3.8.7"+os.path.sep
 
 #oFiles=glob.glob(sourceDir+"*.o")
 #print oFiles
-oFiles = ['PyWCSTools/wcssubs-3.8.4/cel.o', 'PyWCSTools/wcssubs-3.8.4/wcs.o',
-    'PyWCSTools/wcssubs-3.8.4/proj.o', 'PyWCSTools/wcssubs-3.8.4/distort.o',
-    'PyWCSTools/wcssubs-3.8.4/wcsinit.o', 'PyWCSTools/wcssubs-3.8.4/wcslib.o',
-    'PyWCSTools/wcssubs-3.8.4/poly.o', 'PyWCSTools/wcssubs-3.8.4/platepos.o',
-    'PyWCSTools/wcssubs-3.8.4/zpxpos.o', 'PyWCSTools/wcssubs-3.8.4/iget.o',
-    'PyWCSTools/wcssubs-3.8.4/imio.o', 'PyWCSTools/wcssubs-3.8.4/dsspos.o',
-    'PyWCSTools/wcssubs-3.8.4/tnxpos.o', 'PyWCSTools/wcssubs-3.8.4/wcscon.o',
-    'PyWCSTools/wcssubs-3.8.4/fitsfile.o',
-    'PyWCSTools/wcssubs-3.8.4/dateutil.o',
-    'PyWCSTools/wcssubs-3.8.4/imhfile.o', 'PyWCSTools/wcssubs-3.8.4/lin.o',
-    'PyWCSTools/wcssubs-3.8.4/fileutil.o',
-    'PyWCSTools/wcssubs-3.8.4/wcstrig.o',
-    'PyWCSTools/wcssubs-3.8.4/slasubs.o', 'PyWCSTools/wcssubs-3.8.4/sph.o',
-    'PyWCSTools/wcssubs-3.8.4/worldpos.o', 'PyWCSTools/wcssubs-3.8.4/hget.o',
-    'PyWCSTools/wcssubs-3.8.4/hput.o']
+oFiles = ['PyWCSTools/wcssubs-3.8.7/cel.o', 'PyWCSTools/wcssubs-3.8.7/wcs.o',
+    'PyWCSTools/wcssubs-3.8.7/proj.o', 'PyWCSTools/wcssubs-3.8.7/distort.o',
+    'PyWCSTools/wcssubs-3.8.7/wcsinit.o', 'PyWCSTools/wcssubs-3.8.7/wcslib.o',
+    'PyWCSTools/wcssubs-3.8.7/poly.o', 'PyWCSTools/wcssubs-3.8.7/platepos.o',
+    'PyWCSTools/wcssubs-3.8.7/zpxpos.o', 'PyWCSTools/wcssubs-3.8.7/iget.o',
+    'PyWCSTools/wcssubs-3.8.7/imio.o', 'PyWCSTools/wcssubs-3.8.7/dsspos.o',
+    'PyWCSTools/wcssubs-3.8.7/tnxpos.o', 'PyWCSTools/wcssubs-3.8.7/wcscon.o',
+    'PyWCSTools/wcssubs-3.8.7/fitsfile.o',
+    'PyWCSTools/wcssubs-3.8.7/dateutil.o',
+    'PyWCSTools/wcssubs-3.8.7/imhfile.o', 'PyWCSTools/wcssubs-3.8.7/lin.o',
+    'PyWCSTools/wcssubs-3.8.7/fileutil.o',
+    'PyWCSTools/wcssubs-3.8.7/wcstrig.o',
+    'PyWCSTools/wcssubs-3.8.7/slasubs.o', 'PyWCSTools/wcssubs-3.8.7/sph.o',
+    'PyWCSTools/wcssubs-3.8.7/worldpos.o', 'PyWCSTools/wcssubs-3.8.7/hget.o',
+    'PyWCSTools/wcssubs-3.8.7/hput.o']
 
 exampleScripts = glob.glob("scripts"+os.path.sep+"*.py")
 
@@ -47,7 +47,7 @@ class build_PyWCSTools_ext(build_ext):
             distutils.ccompiler.get_default_compiler())
         distutils.command.config.customize_compiler(cc)
 
-        # Suppress warnings from compiling WCSTools wcssubs-3.8.4
+        # Suppress warnings from compiling WCSTools wcssubs-3.8.7
         if "-Wstrict-prototypes" in cc.compiler_so:
             cc.compiler_so.pop(cc.compiler_so.index("-Wstrict-prototypes"))
         if "-Wall" in cc.compiler_so:
