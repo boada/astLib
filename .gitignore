@@ -1,2 +1,3 @@
 build*
 *.[oa]
+.DS_Store
