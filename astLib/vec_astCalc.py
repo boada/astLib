@@ -80,7 +80,7 @@ def da(z):
     return DA
 
 #------------------------------------------------------------------------------
-@numpy.vectorize
+#@numpy.vectorize
 def dm(z):
     """Calculates the transverse comoving distance (proper motion distance) in
     Mpc at redshift z.
@@ -94,15 +94,36 @@ def dm(z):
 
     OMEGA_K = 1.0 - OMEGA_M0 - OMEGA_L0
 
-    # Integration limits
-    xMax = 1.0
-    xMin = 1.0 / (1.0 + z)
+    N = 1000
 
-    # Function to be integrated
-    yn = lambda x: (1.0/numpy.sqrt(OMEGA_M0*x + OMEGA_L0*numpy.power(x, 4) +
+    # Integration limits
+    xMax = numpy.ones(len(z))
+    xMin = 1.0 / (1.0 + z)
+    xStep = (xMax - xMin)/N
+
+    # Running total of y as we integrate
+    yTotal = numpy.zeros(len(z))
+
+    # Simpson's rule integration
+    for n in range(N):
+        x = xMin + xStep * n
+
+        # Function to be integrated
+        yn = (1.0/numpy.sqrt(OMEGA_M0*x + OMEGA_L0*numpy.power(x, 4) +
             OMEGA_K*numpy.power(x, 2)))
 
-    integralValue, integralError = integrate.quad(yn, xMin, xMax)
+        if n==0 or n== N:
+            ytotal += yn
+        else:
+            oddness = n/2.0
+            fractPart = numpy.modf(oddness)[0]
+            if fractPart == 0.5: # odd
+                yTotal += (4. * yn)
+            else:
+                yTotal += (2.* yn)
+
+    integralValue = (xMax - xMin)/ (3*N) * yTotal
+    #integralValue, integralError = integrate.quad(yn, xMin, xMax)
 
     if OMEGA_K > 0.0:
         DM = (C_LIGHT/H0 * numpy.power(abs(OMEGA_K), -0.5) *
