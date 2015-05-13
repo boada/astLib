@@ -164,16 +164,23 @@ def MAD(dataList):
     @return: median absolute deviation
 
     """
-    listMedian=median(dataList)
+#    listMedian=median(dataList)
 
     # Calculate |x-M| values
-    diffModuli=[]
-    for item in dataList:
-        diffModuli.append(math.fabs(item-listMedian))
+#    diffModuli=[]
+#    for item in dataList:
+#        diffModuli.append(math.fabs(item-listMedian))
 
-    MAD=median(diffModuli)
+#    MAD=median(diffModuli)
+#    return MAD
 
-    return MAD
+#    arr = np.ma.array(dataList).compress() # speed up not using this step
+    med = numpy.median(dataList)
+    try:
+        return numpy.median(numpy.fabs(dataList - med))
+    except TypeError:
+        dataList = numpy.array(dataList)
+        return numpy.median(numpy.fabs(dataList - med))
 
 #-----------------------------------------------------------------------------
 def normalizdMAD(dataList):
@@ -210,7 +217,8 @@ def biweightLocation(dataList, tuningConstant):
         return numpy.nan
 
     C = tuningConstant
-    listMedian = median(dataList)
+#    listMedian = median(dataList)
+    listMedian = numpy.median(dataList)
     listMAD = MAD(dataList)
     if listMAD != 0:
         uValues = []
