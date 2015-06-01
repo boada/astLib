@@ -2,8 +2,8 @@
 
     version: dev
 
-    (c) 2007-2012 Matt Hilton
-    (c) 2013-2015 Matt Hilton & Steven Boada
+    (c) 2007-2012 Matt Hilton (University of KwaZulu-Natal)
+    (c) 2013-2015 Matt Hilton & Steven Boada (Texas A&M University)
 
     http://astlib.sourceforge.net
 
