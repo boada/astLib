@@ -42,20 +42,20 @@ Some scripts using astLib can be found in the examples/ folder in this archive.
 
 astLib requires:
 
-    * Python
+- Python
       (tested on versions 2.7.3 and 3.2.3)
-    * PyFITS - http://www.stsci.edu/resources/software_hardware/pyfits
+- PyFITS - http://www.stsci.edu/resources/software_hardware/pyfits
       (tested on version 3.0.7)
-    * numpy - http://numpy.scipy.org
+- numpy - http://numpy.scipy.org
       (tested on version 1.6.2)
-    * scipy - http://scipy.org
+- scipy - http://scipy.org
       (tested on version 0.10.1)
-    * matplotlib - http://matplotlib.sourceforge.net
+- matplotlib - http://matplotlib.sourceforge.net
       (tested on versions 1.1.1 and 1.2.0)
 
 optional:
     
-    * Python Imaging Library - http://www.pythonware.com/products/pil
+- Python Imaging Library - http://www.pythonware.com/products/pil
       (tested on version 1.1.7)
 
 Other versions of the software listed above are likely to work - I'm unable to test every possible 
