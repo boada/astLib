@@ -63,7 +63,7 @@ class build_PyWCSTools_ext(build_ext):
         build_ext.build_extensions(self)
 
 setup(name='astLib',
-    version='0.7.0',
+    version='99.0.0',
     url='http://astlib.sourceforge.net',
     download_url='http://sourceforge.net/project/platformdownload.php?group_id=202537',
     author='Matt Hilton',
