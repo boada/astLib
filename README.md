@@ -13,6 +13,9 @@
 **Copyright 2015 the authors**.
 See the file `LICENSE` for more details.
 
+Any use of the content of this repository in academic research comes with a **request of acknowlegement**.
+Contact the authors if it is unclear how to properly cite this work.
+
 ##INTRODUCTION
 
 astLib provides some tools for research astronomers who use Python. It is divided into several modules:
