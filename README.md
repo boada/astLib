@@ -33,8 +33,7 @@ used by some routines in astCoords, astImages and astPlots.
 The goal of astLib is to provide features useful to astronomers that are not included in the scipy 
 (http://scipy.org), numpy (http://numpy.scipy.org) or matplotlib (http://matplotlib.sourceforge.net) modules 
 on which astLib depends. As such, the astStats module is unlikely to be extended beyond its present state
-due to the extensive statistical routines provided by scipy (I also recommend the Python bindings for GNU R 
-- http://rpy.sourceforge.net).
+due to the extensive statistical routines provided by scipy (I also recommend the Python bindings for GNU R,  http://rpy.sourceforge.net).
 
 Some scripts using astLib can be found in the examples/ folder in this archive.
 
