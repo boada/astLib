@@ -113,7 +113,7 @@ def dm(z):
             OMEGA_K*numpy.power(x, 2)))
 
         if n==0 or n== N:
-            ytotal += yn
+            yTotal += yn
         else:
             oddness = n/2.0
             fractPart = numpy.modf(oddness)[0]
