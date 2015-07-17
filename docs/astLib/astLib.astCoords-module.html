@@ -59,7 +59,7 @@
 <p>module for coordinate manipulation (conversions, calculations 
   etc.)</p>
   <p>(c) 2007-2012 Matt Hilton</p>
-  <p>(c) 2013 Matt Hilton &amp; Steven Boada</p>
+  <p>(c) 2013-2014 Matt Hilton &amp; Steven Boada</p>
   <p><a href="http://astlib.sourceforge.net" 
   target="_top">http://astlib.sourceforge.net</a></p>
 
@@ -158,6 +158,44 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">tuple</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="astLib.astCoords-module.html#eq2cart" class="summary-sig-name">eq2cart</a>(<span class="summary-sig-arg">RA</span>,
+        <span class="summary-sig-arg">DEC</span>,
+        <span class="summary-sig-arg">r</span>)</span><br />
+      Convert Equatorial coordinates to Cartesian coordinates.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="astLib.astCoords-pysrc.html#eq2cart">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">tuple</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="astLib.astCoords-module.html#cart2eq" class="summary-sig-name">cart2eq</a>(<span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>,
+        <span class="summary-sig-arg">z</span>)</span><br />
+      Convert Cartesian coordinates to Equatorial coordinates.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="astLib.astCoords-pysrc.html#cart2eq">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">float or numpy array, depending upon type of RADeg2, decDeg2</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -214,6 +252,28 @@
       J2000, B1950, and Galactic.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="astLib.astCoords-pysrc.html#convertCoords">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="astLib.astCoords-module.html#calcSkyArea" class="summary-sig-name">calcSkyArea</a>(<span class="summary-sig-arg">RA1</span>,
+        <span class="summary-sig-arg">RA2</span>,
+        <span class="summary-sig-arg">DEC1</span>,
+        <span class="summary-sig-arg">DEC2</span>,
+        <span class="summary-sig-arg">units</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Calculates the area of the quadrangle on the sky given by the 
+      intersection of a right ascension lune and declination zone.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="astLib.astCoords-pysrc.html#calcSkyArea">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -373,6 +433,68 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="eq2cart"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">eq2cart</span>(<span class="sig-arg">RA</span>,
+        <span class="sig-arg">DEC</span>,
+        <span class="sig-arg">r</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="astLib.astCoords-pysrc.html#eq2cart">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Convert Equatorial coordinates to Cartesian coordinates. Return a 
+  tuple (x, y, z) in the same unit of the input distance. This is the 
+  inverse of cart2eq.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>RA</code></strong> (float) - Right Ascension in decimal degrees</li>
+        <li><strong class="pname"><code>DEC</code></strong> (float) - Declination in decimal degrees</li>
+        <li><strong class="pname"><code>r</code></strong> (float) - Distance to the object.</li>
+    </ul></dd>
+    <dt>Returns: tuple</dt>
+        <dd>Tuple of (x, y, z) in same unit as the input distance.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="cart2eq"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cart2eq</span>(<span class="sig-arg">x</span>,
+        <span class="sig-arg">y</span>,
+        <span class="sig-arg">z</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="astLib.astCoords-pysrc.html#cart2eq">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Convert Cartesian coordinates to Equatorial coordinates. Returns a 
+  tuple of (RA, DEC, r), with RA and DEC given in decimal degrees and r in 
+  the same unit as the input.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x</code></strong> (float) - x coordinate</li>
+        <li><strong class="pname"><code>y</code></strong> (float) - x coordinate</li>
+        <li><strong class="pname"><code>z</code></strong> (float) - x coordinate</li>
+    </ul></dd>
+    <dt>Returns: tuple</dt>
+        <dd>Tuple of (RA, DEC, r)</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="calcAngSepDeg"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -477,6 +599,40 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="calcSkyArea"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">calcSkyArea</span>(<span class="sig-arg">RA1</span>,
+        <span class="sig-arg">RA2</span>,
+        <span class="sig-arg">DEC1</span>,
+        <span class="sig-arg">DEC2</span>,
+        <span class="sig-arg">units</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="astLib.astCoords-pysrc.html#calcSkyArea">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Calculates the area of the quadrangle on the sky given by the 
+  intersection of a right ascension lune and declination zone. By default, 
+  the area is returned in square degrees.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>RA1</code></strong> (float) - Right ascension in decimal degrees</li>
+        <li><strong class="pname"><code>RA2</code></strong> (float) - Right ascension in decimal degrees</li>
+        <li><strong class="pname"><code>DEC1</code></strong> (float) - Declination in decimal degrees</li>
+        <li><strong class="pname"><code>DEC2</code></strong> (float) - Declination in decimal degrees</li>
+        <li><strong class="pname"><code>units</code></strong> (bool) - True: Area is given in square degrees. False: Area is given as a 
+          fraction of the total sky.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="calcRADecSearchBox"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -538,7 +694,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Mar  5 18:58:41 2013
+    Generated by Epydoc 3.0.1 on Fri Jul 17 15:14:02 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
