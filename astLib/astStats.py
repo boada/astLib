@@ -931,7 +931,7 @@ def weightedBinner(data, weights, binMin, binMax, binTotal):
 
 #-----------------------------------------------------------------------------
 
-def bootstrap(data, statistic, resamples=1000, alpha=0.05, **args):
+def bootstrap(data, statistic, resamples=1000, alpha=0.05, **kwargs):
     """ Returns the bootstrap estimate of the confidence interval for the given
     statistic. The confidence interval is given by 100*(1-alpha). Passes a 1d
     array to the function, statistic. Any arguments needed by statistic are
@@ -945,8 +945,8 @@ def bootstrap(data, statistic, resamples=1000, alpha=0.05, **args):
     @param resamples: The number of bootstrap resamplings
     @type alpha: float
     @param alpha: The confidence interval given by 100*(1-alpha), 95% default
-    @type **args: Keywords
-    @param **args: Arguments needed by the statistic function
+    @type kwargs: Keywords
+    @param kwargs: Arguments needed by the statistic function
     @rtype: tuple
     @return: (Lower Interval, Upper Interval)
 
@@ -956,7 +956,7 @@ def bootstrap(data, statistic, resamples=1000, alpha=0.05, **args):
 
     samples = numpy.randomchoice(data, size=(resamples, len(data)),
             replace=True)
-    stat = numpy.sort([statistic(row, **args) for row in samples])
+    stat = numpy.sort([statistic(row, **kwargs) for row in samples])
     return (stat[int((alpha/2.0) * resamples)],
             stat[int((1-alpha/2.0) * resamples)])
 
@@ -1031,8 +1031,8 @@ def slice_sampler(px, N=1, x=None):
     @type x: numpy array or list
     @param x: Optional array/list of observation values to return, where
     prob(x) = px
-    @rtype: numpy array
-    @rparam: The desired number of samples drawn from the distribution
+    @rtype: numpy.array
+    @return: The desired number of samples drawn from the distribution
 
     """
 

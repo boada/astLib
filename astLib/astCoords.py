@@ -241,7 +241,7 @@ def eq2cart(RA, DEC, r):
     @type DEC: float
     @param DEC: Declination in decimal degrees
     @type r: float
-    @param: Distance to the object.
+    @param r: Distance to the object.
     @rtype: tuple
     @return: Tuple of (x, y, z) in same unit as the input distance.
 
