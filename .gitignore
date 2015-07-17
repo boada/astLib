@@ -1,3 +1,5 @@
 build*
 *.[oa]
 .DS_Store
+*.pyc
+*.swp
