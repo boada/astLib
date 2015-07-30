@@ -951,10 +951,8 @@ def bootstrap(data, statistic, resamples=1000, alpha=0.05, **kwargs):
     @return: (Lower Interval, Upper Interval)
 
     """
-    #from numpy.random import choice
-    #from numpy import sort
 
-    samples = numpy.randomchoice(data, size=(resamples, len(data)),
+    samples = numpy.random.choice(data, size=(resamples, len(data)),
             replace=True)
     stat = numpy.sort([statistic(row, **kwargs) for row in samples])
     return (stat[int((alpha/2.0) * resamples)],
