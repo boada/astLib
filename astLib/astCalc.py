@@ -142,7 +142,9 @@ def dc(z):
 #------------------------------------------------------------------------------
 def dVcdz(z):
     """Calculates the line of sight comoving volume element per steradian dV/dz
-    at redshift z.
+    at redshift z. The unit is Mpc^3/sr. To find the total volume of the
+    universe integrate this function between two redshifts and multiply by the
+    total area of the sky, 4pi steradians.
 
     @type z: float
     @param z: redshift
