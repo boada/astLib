@@ -128,7 +128,7 @@ def decimal2hms(RADeg, delimiter):
         sMins = str(int(sMins)+1)
     if int(sMins) == 60:
         sMins = "00"
-        sDeg = str(int(sDeg)+1)
+        #sDeg = str(int(sDeg)+1)
 
     return sHours+delimiter+sMins+delimiter+sSecs
 
@@ -276,8 +276,10 @@ def cart2eq(x, y, z):
 
     r = numpy.sqrt(numpy.power(x,2) + numpy.power(y,2) + numpy.power(z,2))
     ra = numpy.arctan2(y, x)
-    ra[ra < 0] = 2.0 * numpy.pi + ra[ra < 0]
-    #ra = ra if ra >= 0 else (2.0 * numpy.pi + ra)
+    try:
+        ra[ra < 0] = 2.0 * numpy.pi + ra[ra < 0]
+    except TypeError:
+        ra = ra if ra >= 0 else (2.0 * numpy.pi + ra)
     dec = numpy.arcsin(z / r)
 
     ra = numpy.degrees(ra)
@@ -310,8 +312,8 @@ def calcAngSepDeg(RADeg1, decDeg1, RADeg2, decDeg2):
     gRA = numpy.radians(RADeg2)
     gDec = numpy.radians(decDeg2)
 
-    dRA = cRA-gRA
-    dDec = gDec-cDec
+    #dRA = cRA-gRA
+    #dDec = gDec-cDec
     cosC = ((numpy.sin(gDec)*numpy.sin(cDec)) +
         (numpy.cos(gDec)*numpy.cos(cDec) * numpy.cos(gRA-cRA)))
     x = (numpy.cos(cDec)*numpy.sin(gRA-cRA))/cosC
@@ -348,7 +350,7 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
     #rara1 = ra1*d2r
     dcrad1 = dec1*d2r
     shiftRArad = deltaRA*as2r
-    shiftDCrad = deltaDec*as2r
+    #shiftDCrad = deltaDec*as2r
 
     # Shift!
     #deldec2 = 0.0
