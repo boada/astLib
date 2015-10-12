@@ -8,8 +8,6 @@ U{http://astlib.sourceforge.net}
 
 """
 
-#import sys
-import math
 import numpy
 from PyWCSTools import wcscon
 
@@ -343,8 +341,8 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
 
     """
 
-    d2r = math.pi/180.
-    as2r = math.pi/648000.
+    d2r = numpy.pi/180.
+    as2r = numpy.pi/648000.
 
     # Convert everything to radians
     #rara1 = ra1*d2r
@@ -354,9 +352,9 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
 
     # Shift!
     #deldec2 = 0.0
-    sindis = math.sin(shiftRArad / 2.0)
-    sindelRA = sindis / math.cos(dcrad1)
-    delra = 2.0*math.asin(sindelRA) / d2r
+    sindis = numpy.sin(shiftRArad / 2.0)
+    sindelRA = sindis / numpy.cos(dcrad1)
+    delra = 2.0*numpy.asin(sindelRA) / d2r
 
     # Make changes
     ra2 = ra1+delra
