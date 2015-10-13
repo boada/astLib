@@ -8,8 +8,6 @@ U{http://astlib.sourceforge.net}
 
 """
 
-#import sys
-import math
 import numpy
 from PyWCSTools import wcscon
 
@@ -343,8 +341,8 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
 
     """
 
-    d2r = math.pi/180.
-    as2r = math.pi/648000.
+    d2r = numpy.pi/180.
+    as2r = numpy.pi/648000.
 
     # Convert everything to radians
     #rara1 = ra1*d2r
@@ -354,9 +352,9 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
 
     # Shift!
     #deldec2 = 0.0
-    sindis = math.sin(shiftRArad / 2.0)
-    sindelRA = sindis / math.cos(dcrad1)
-    delra = 2.0*math.asin(sindelRA) / d2r
+    sindis = numpy.sin(shiftRArad / 2.0)
+    sindelRA = sindis / numpy.cos(dcrad1)
+    delra = 2.0*numpy.asin(sindelRA) / d2r
 
     # Make changes
     ra2 = ra1+delra
@@ -496,4 +494,48 @@ def calcRADecSearchBox(RADeg, decDeg, radiusSkyDeg):
 
     return [RAMin, RAMax, decMin, decMax]
 
+def aitoff(lon, lat):
+    """
+    Make Aitoff map projection.
 
+    Take traditional longitude and latitude in radians and return a
+    tuple (x, y).
+
+    Notice that traditionally longitude is in [-pi:pi] from the meridian,
+    and latitude is in [-pi/2:pi/2] from the equator. So, for example, if
+    you would like to make a galactic map projection centered on the galactic
+    center, before passing galactic longitude l to the function you should
+    first do:
+    l = l if l <= numpy.pi else l - 2 * numpy.pi
+
+    Keyword arguments:
+    lon -- Traditional longitude in radians, in range [-pi:pi]
+    lat -- Traditional latitude in radians, in range [-pi/2:pi/2]
+    """
+
+    x = numpy.zeros_like(lon)
+    y = numpy.zeros_like(lat)
+
+    # check if the input values are in the range
+    if lon > numpy.pi or lon < -numpy.pi or lat > numpy.pi / 2 or \
+        lat < -numpy.pi /2 :
+        print('Aitoff: Input longitude and latitude out of range.\n')
+        print('           lon: [-pi,pi]; lat: [-pi/2,pi/2].\n')
+        return None
+
+    # take care of the sigularity at (0, 0), otherwise division by zero may
+    # happen
+    if lon == 0 and lat ==0:
+        return 0.0, 0.0
+
+    # a quick inline unnormalized sinc function, with discontinuity removed
+    sinc = lambda x: 0 if x == 0 else numpy.sin(x) / x
+
+    alpha = numpy.acos(numpy.cos(lat) * numpy.cos(lon / 2.0))
+
+    # the sinc function used here is the unnormalized sinc function
+    x = 2.0 * numpy.cos(lat) * numpy.sin(lon / 2.0) / sinc(alpha)
+
+    y = numpy.sin(lat) / sinc(alpha)
+
+    return x, y
