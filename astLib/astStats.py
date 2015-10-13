@@ -8,7 +8,8 @@ U{http://astlib.sourceforge.net}
 
 This module (as you may notice) provides very few statistical routines. It
 does, however, provide biweight (robust) estimators of location and scale, as
-described in Beers et al. 1990 (AJ, 100, 32), in addition to a robust least squares fitting routine that uses the biweight transform.
+described in Beers et al. 1990 (AJ, 100, 32), in addition to a robust least
+squares fitting routine that uses the biweight transform.
 
 Some routines may fail if they are passed lists with few items and encounter a
 `divide by zero' error. Where this occurs, the function will return None. An
@@ -198,7 +199,7 @@ def normalizdMAD(dataList):
     return 1.4826 * MAD(dataList)
 
 #-----------------------------------------------------------------------------
-def biweightLocation(dataList, tuningConstant):
+def biweightLocation(dataList, tuningConstant=6.0):
     """Calculates the biweight location estimator (like a robust average) of a
     list of numbers.
 
@@ -246,7 +247,7 @@ def biweightLocation(dataList, tuningConstant):
     return CBI
 
 #-----------------------------------------------------------------------------
-def biweightScale(dataList, tuningConstant):
+def biweightScale(dataList, tuningConstant=9.0):
     """Calculates the biweight scale estimator (like a robust standard
     deviation) of a list of numbers.
 
@@ -297,7 +298,7 @@ def biweightScale(dataList, tuningConstant):
     SBI = math.pow(float(valCount), 0.5) * (top/bottom)
     return SBI
 #-----------------------------------------------------------------------------
-def biweightScale_test(dataList, tuningConstant):
+def biweightScale_test(dataList, tuningConstant=9.0):
     """Calculates the biweight scale estimator (like a robust standard
     deviation) of a list of numbers.
 
