@@ -494,6 +494,7 @@ def calcRADecSearchBox(RADeg, decDeg, radiusSkyDeg):
 
     return [RAMin, RAMax, decMin, decMax]
 
+#-----------------------------------------------------------------------------
 def aitoff(lon, lat):
     """
     Make Aitoff map projection.
@@ -537,5 +538,95 @@ def aitoff(lon, lat):
     x = 2.0 * numpy.cos(lat) * numpy.sin(lon / 2.0) / sinc(alpha)
 
     y = numpy.sin(lat) / sinc(alpha)
+
+    return x, y
+
+#-----------------------------------------------------------------------------
+def mollweide(lon, lat):
+    """
+    Make Mollweide map projection.
+
+    Take traditional longitude and latitude in radians and return a
+    tuple (x, y).
+
+    Notice that traditionally longitude is in [-pi:pi] from the meridian,
+    and latitude is in [-pi/2:pi/2] from the equator. So, for example, if
+    you would like to make a galactic map projection centered on the galactic
+    center, before passing galactic longitude l to the function you should
+    first do:
+    l = l if l <= numpy.pi else l - 2 * numpy.pi
+
+    Keyword arguments:
+    lon -- Traditional longitude in radians, in range [-pi:pi]
+    lat -- Traditional latitude in radians, in range [-pi/2:pi/2]
+    """
+
+    # check if the input values are in the range
+    if lon > numpy.pi or lon < -numpy.pi or lat > numpy.pi / 2 or \
+            lat < -numpy.pi/2 :
+        print('Mollweide: Input longitude and latitude out of range.\n')
+        print('           lon: [-pi,pi]; lat: [-pi/2,pi/2].\n')
+        return None
+
+    # bypass lat = +/- pi/2, otherwise division by zero may occur
+    if lat == numpy.pi / 2.0:
+        theta = numpy.pi / 2.0
+    elif lat == -numpy.pi / 2.0:
+        theta = -numpy.pi / 2.0
+    else:
+        # a simple Newton-Raphson iteration
+        # to solve the equation 2x + sin(2x) = pi*sin(lat)
+        x1 = lat
+
+        while 1:
+            x2 = x1 - ((2.0 * x1 + numpy.sin(2.0 * x1) - numpy.pi *\
+                numpy.sin(lat)) / (2.0 + 2.0 * numpy.cos(2.0 * x1)))
+
+            # break the loop when desired accuracy achieved
+            if numpy.fabs(x2 - x1) < 1.0e-10:
+                break
+            else:
+                x1 = x2
+
+        theta = x2
+
+    x = 2.0 * numpy.sqrt(2.0) / numpy.pi * lon * numpy.cos(theta)
+
+    y = numpy.sqrt(2.0) * numpy.sin(theta)
+
+    return x,y
+
+#-----------------------------------------------------------------------------
+def hammer(lon, lat):
+    """
+    Make Hammer map projection.
+
+    Take traditional longitude and latitude in radians and return a
+    tuple (x, y).
+
+    Notice that traditionally longitude is in [-pi:pi] from the meridian,
+    and latitude is in [-pi/2:pi/2] from the equator. So, for example, if
+    you would like to make a galactic map projection centered on the galactic
+    center, before passing galactic longitude l to the function you should
+    first do:
+    l = l if l <= numpy.pi else l - 2 * numpy.pi
+
+    Keyword arguments:
+    lon -- Traditional longitude in radians, in range [-pi:pi]
+    lat -- Traditional latitude in radians, in range [-pi/2:pi/2]
+    """
+
+    # check if the input values are in the range
+    if lon > numpy.pi or lon < -numpy.pi or lat > numpy.pi / 2 or \
+        lat < -numpy.pi /2 :
+        print('Hammer: Input longitude and latitude out of range.\n')
+        print('           lon: [-pi,pi]; lat: [-pi/2,pi/2].\n')
+        return None
+
+    s = numpy.sqrt(1.0 + numpy.cos(lat) * numpy.cos(lon / 2.0))
+
+    x = 2.0 * numpy.sqrt(2.0) * numpy.cos(lat) * numpy.sin(lon / 2.0) / s
+
+    y = numpy.sqrt(2.0) * numpy.sin(lat) / s
 
     return x, y
