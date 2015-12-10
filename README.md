@@ -13,7 +13,7 @@
 **Copyright 2015 the authors**.
 See the file `LICENSE` for more details.
 
-Any use of the content of this repository in academic research comes with a **request of acknowlegement**.
+Any use of the content of this repository in academic research comes with a **request of acknowledgment**.
 Contact the authors if it is unclear how to properly cite this work.
 
 ##INTRODUCTION
@@ -110,7 +110,7 @@ decimal point separator is not '.' (e.g. Germany), the astWCS coordinate convers
 strange results if this is not accounted for. As of version 0.3.0, the astWCS module will detect if this is 
 the case and print a warning message to the console.
 
-The workaround for this issue is to add the following after importing any python modules that expicitly set 
+The workaround for this issue is to add the following after importing any python modules that explicitly set 
 the locale (such as matplotlib):
     
     % import locale
