@@ -260,7 +260,7 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="astLib.astStats-module.html#biweightLocation" class="summary-sig-name">biweightLocation</a>(<span class="summary-sig-arg">dataList</span>,
-        <span class="summary-sig-arg">tuningConstant</span>)</span><br />
+        <span class="summary-sig-arg">tuningConstant</span>=<span class="summary-sig-default">6.0</span>)</span><br />
       Calculates the biweight location estimator (like a robust average) of
       a list of numbers.</td>
           <td align="right" valign="top">
@@ -279,7 +279,7 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="astLib.astStats-module.html#biweightScale" class="summary-sig-name">biweightScale</a>(<span class="summary-sig-arg">dataList</span>,
-        <span class="summary-sig-arg">tuningConstant</span>)</span><br />
+        <span class="summary-sig-arg">tuningConstant</span>=<span class="summary-sig-default">9.0</span>)</span><br />
       Calculates the biweight scale estimator (like a robust standard 
       deviation) of a list of numbers.</td>
           <td align="right" valign="top">
@@ -298,7 +298,7 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="astLib.astStats-module.html#biweightScale_test" class="summary-sig-name">biweightScale_test</a>(<span class="summary-sig-arg">dataList</span>,
-        <span class="summary-sig-arg">tuningConstant</span>)</span><br />
+        <span class="summary-sig-arg">tuningConstant</span>=<span class="summary-sig-default">9.0</span>)</span><br />
       Calculates the biweight scale estimator (like a robust standard 
       deviation) of a list of numbers.</td>
           <td align="right" valign="top">
@@ -551,6 +551,7 @@
         <span class="summary-sig-arg">statistic</span>,
         <span class="summary-sig-arg">resamples</span>=<span class="summary-sig-default">1000</span>,
         <span class="summary-sig-arg">alpha</span>=<span class="summary-sig-default">0.05</span>,
+        <span class="summary-sig-arg">output</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">ci</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
       Returns the bootstrap estimate of the confidence interval for the 
       given statistic.</td>
@@ -896,7 +897,7 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">biweightLocation</span>(<span class="sig-arg">dataList</span>,
-        <span class="sig-arg">tuningConstant</span>)</span>
+        <span class="sig-arg">tuningConstant</span>=<span class="sig-default">6.0</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astStats-pysrc.html#biweightLocation">source&nbsp;code</a></span>&nbsp;
@@ -927,7 +928,7 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">biweightScale</span>(<span class="sig-arg">dataList</span>,
-        <span class="sig-arg">tuningConstant</span>)</span>
+        <span class="sig-arg">tuningConstant</span>=<span class="sig-default">9.0</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astStats-pysrc.html#biweightScale">source&nbsp;code</a></span>&nbsp;
@@ -958,7 +959,7 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">biweightScale_test</span>(<span class="sig-arg">dataList</span>,
-        <span class="sig-arg">tuningConstant</span>)</span>
+        <span class="sig-arg">tuningConstant</span>=<span class="sig-default">9.0</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astStats-pysrc.html#biweightScale_test">source&nbsp;code</a></span>&nbsp;
@@ -1380,6 +1381,7 @@
         <span class="sig-arg">statistic</span>,
         <span class="sig-arg">resamples</span>=<span class="sig-default">1000</span>,
         <span class="sig-arg">alpha</span>=<span class="sig-default">0.05</span>,
+        <span class="sig-arg">output</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">ci</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">**kwargs</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -1397,7 +1399,10 @@
         <li><strong class="pname"><code>data</code></strong> (list) - The data on which the given statistic is calculated</li>
         <li><strong class="pname"><code>statistic</code></strong> (function) - The statistic desired</li>
         <li><strong class="pname"><code>resamples</code></strong> (int) - The number of bootstrap resamplings</li>
-        <li><strong class="pname"><code>alpha</code></strong> (float) - The confidence interval given by 100*(1-alpha), 95% default</li>
+        <li><strong class="pname"><code>alpha</code></strong> (float) - The confidence interval given by 100*(1-alpha), 95% defaulti</li>
+        <li><strong class="pname"><code>output</code></strong> - The format of the output. 'ci' gives the confidence interval, and
+          'errorbar' gives the length of the errorbar suitable for plotting
+          with matplotlib.</li>
         <li><strong class="pname"><code>kwargs</code></strong> (Keywords) - Arguments needed by the statistic function</li>
     </ul></dd>
     <dt>Returns: tuple</dt>
@@ -1503,7 +1508,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 17 15:14:02 2015
+    Generated by Epydoc 3.0.1 on Mon Nov 16 15:09:30 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

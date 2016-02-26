@@ -354,7 +354,7 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
     #deldec2 = 0.0
     sindis = numpy.sin(shiftRArad / 2.0)
     sindelRA = sindis / numpy.cos(dcrad1)
-    delra = 2.0*numpy.asin(sindelRA) / d2r
+    delra = 2.0*numpy.arcsin(sindelRA) / d2r
 
     # Make changes
     ra2 = ra1+delra

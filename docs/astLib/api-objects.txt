@@ -38,6 +38,7 @@ astLib.astCoords.eq2cart	astLib.astCoords-module.html#eq2cart
 astLib.astCoords.hms2decimal	astLib.astCoords-module.html#hms2decimal
 astLib.astCoords.calcRADecSearchBox	astLib.astCoords-module.html#calcRADecSearchBox
 astLib.astCoords.convertCoords	astLib.astCoords-module.html#convertCoords
+astLib.astCoords.aitoff	astLib.astCoords-module.html#aitoff
 astLib.astCoords.cart2eq	astLib.astCoords-module.html#cart2eq
 astLib.astImages	astLib.astImages-module.html
 astLib.astImages.resampleToTanProjection	astLib.astImages-module.html#resampleToTanProjection

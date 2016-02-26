@@ -8,7 +8,8 @@ U{http://astlib.sourceforge.net}
 
 This module (as you may notice) provides very few statistical routines. It
 does, however, provide biweight (robust) estimators of location and scale, as
-described in Beers et al. 1990 (AJ, 100, 32), in addition to a robust least squares fitting routine that uses the biweight transform.
+described in Beers et al. 1990 (AJ, 100, 32), in addition to a robust least
+squares fitting routine that uses the biweight transform.
 
 Some routines may fail if they are passed lists with few items and encounter a
 `divide by zero' error. Where this occurs, the function will return None. An
@@ -198,7 +199,7 @@ def normalizdMAD(dataList):
     return 1.4826 * MAD(dataList)
 
 #-----------------------------------------------------------------------------
-def biweightLocation(dataList, tuningConstant):
+def biweightLocation(dataList, tuningConstant=6.0):
     """Calculates the biweight location estimator (like a robust average) of a
     list of numbers.
 
@@ -246,7 +247,7 @@ def biweightLocation(dataList, tuningConstant):
     return CBI
 
 #-----------------------------------------------------------------------------
-def biweightScale(dataList, tuningConstant):
+def biweightScale(dataList, tuningConstant=9.0):
     """Calculates the biweight scale estimator (like a robust standard
     deviation) of a list of numbers.
 
@@ -297,7 +298,7 @@ def biweightScale(dataList, tuningConstant):
     SBI = math.pow(float(valCount), 0.5) * (top/bottom)
     return SBI
 #-----------------------------------------------------------------------------
-def biweightScale_test(dataList, tuningConstant):
+def biweightScale_test(dataList, tuningConstant=9.0):
     """Calculates the biweight scale estimator (like a robust standard
     deviation) of a list of numbers.
 
@@ -970,11 +971,14 @@ def bootstrap(data, statistic, resamples=1000, alpha=0.05, output='ci',
         raise ValueError("Output option {0} is not supported.".format(output))
 #-----------------------------------------------------------------------------
 
-def runningStatistic(x, y, statistic='mean', binNumber=10):
+def runningStatistic(x, y, statistic='mean', binNumber=10, **kwargs):
     """ Calculates the value given by statistic in bins of x. Useful for
     plotting a running mean value for a scatter plot, for example. This
     function allows the computation of the sum, mean, median, std, or other
     statistic of the values within each bin.
+
+    NOTE: if the statistic is a callable function and there are empty data bins
+    those bins will be skipped to keep the function from falling over.
 
     @type x: numpy array
     @param x: data over which the bins are calculated
@@ -982,11 +986,13 @@ def runningStatistic(x, y, statistic='mean', binNumber=10):
     @param y: values for corresponding x values
     @type statistic: string or function
     @param statistic: The statistic to compute (default is 'mean'). Acceptable
-    values are 'mean', 'median', 'sum', 'std', and callable function.
+    values are 'mean', 'median', 'sum', 'std', and callable function. Extra
+    arguements are passed as kwargs.
     @type binNumber: int
     @param binNumber: The desired number of bins for the x data.
-    @rtype: list
-    @return: The value of the selected statistic in each bin
+    @rtype: tuple
+    @return: A tuple of two lists containing the left bin edges and the value
+    of the statistic in each of the bins.
 
     """
 
@@ -1003,21 +1009,25 @@ def runningStatistic(x, y, statistic='mean', binNumber=10):
     if not isinstance(y, numpy.ndarray):
         y = numpy.asarray(y)
 
-    bins = numpy.linspace(x.min(), x.max(), binNumber)
-    index = numpy.digitize(x, bins) -1
+    try:
+        bins = numpy.linspace(x.min(), x.max(), binNumber)
+        index = numpy.digitize(x, bins) -1
+    except TypeError:
+        index = numpy.digitize(x, binNumber) -1
+        binNumber = len(binNumber)
 
     if statistic == 'mean':
-        running = [numpy.mean(y[index==k]) for k in range(binNumber)]
+        running = [numpy.mean(y[index==k]) for k in xrange(binNumber)]
     elif statistic == 'median':
-        running = [numpy.median(y[index==k]) for k in range(binNumber)]
+        running = [numpy.median(y[index==k]) for k in xrange(binNumber)]
     elif statistic == 'sum':
-        running = [numpy.sum(y[index==k]) for k in range(binNumber)]
+        running = [numpy.sum(y[index==k]) for k in xrange(binNumber)]
     elif statistic == 'std':
-        running = [numpy.std(y[index==k]) for k in range(binNumber)]
+        running = [numpy.std(y[index==k]) for k in xrange(binNumber)]
     elif callable(statistic):
-        running = [statistic(y[index==k]) for k in range(binNumber)]
-
-    return running
+        running = [statistic(y[index==k], **kwargs) for k in
+                xrange(binNumber) if not len(y[index==k]) == 0]
+    return bins, running
 
 #-----------------------------------------------------------------------------
 
