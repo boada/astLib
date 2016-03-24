@@ -1011,23 +1011,26 @@ def runningStatistic(x, y, statistic='mean', binNumber=10, **kwargs):
 
     try:
         bins = numpy.linspace(x.min(), x.max(), binNumber)
-        index = numpy.digitize(x, bins) -1
+        centers = (bins[:-1] + bins[1:])/2.
+        index = numpy.digitize(x, bins)
     except TypeError:
-        index = numpy.digitize(x, binNumber) -1
+        bins = binNumber
+        centers = (bins[:-1] + bins[1:])/2.
+        index = numpy.digitize(x, binNumber)
         binNumber = len(binNumber)
 
     if statistic == 'mean':
-        running = [numpy.mean(y[index==k]) for k in xrange(binNumber)]
+        running = [numpy.mean(y[index==k]) for k in xrange(1,binNumber)]
     elif statistic == 'median':
-        running = [numpy.median(y[index==k]) for k in xrange(binNumber)]
+        running = [numpy.median(y[index==k]) for k in xrange(1,binNumber)]
     elif statistic == 'sum':
-        running = [numpy.sum(y[index==k]) for k in xrange(binNumber)]
+        running = [numpy.sum(y[index==k]) for k in xrange(1,binNumber)]
     elif statistic == 'std':
-        running = [numpy.std(y[index==k]) for k in xrange(binNumber)]
+        running = [numpy.std(y[index==k]) for k in xrange(1,binNumber)]
     elif callable(statistic):
         running = [statistic(y[index==k], **kwargs) for k in
-                xrange(binNumber) if not len(y[index==k]) == 0]
-    return bins, running
+                xrange(1,binNumber) if not len(y[index==k]) == 0]
+    return centers, running
 
 #-----------------------------------------------------------------------------
 
