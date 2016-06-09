@@ -54,15 +54,10 @@ def weightedMean(dataList):
     @return: weighted mean average
 
     """
-    sum=0
-    weightSum=0
-    for item in dataList:
-        sum=sum+float(item[0]*item[1])
-        weightSum=weightSum+item[1]
-    if len(dataList)>0:
-        mean=sum/weightSum
-    else:
-        mean=0
+
+    dataList = numpy.asarray(dataList)
+    mean = numpy.average(dataList[:,0], weights=dataList[:,1])
+
     return mean
 
 #-----------------------------------------------------------------------------
@@ -110,23 +105,18 @@ def weightedStdev(dataList):
     @note: Returns None if an error occurs.
 
     """
-    listMean=weightedMean(dataList)
-    sum=0
-    wSum=0
-    wNonZero=0
-    for item in dataList:
-        if item[1]>0.0:
-            sum=sum+float((item[0]-listMean)/item[1])*float((item[0]-listMean)/item[1])
-            wSum=wSum+float(1.0/item[1])*float(1.0/item[1])
 
-    if len(dataList)>1:
-        nFactor=float(len(dataList))/float(len(dataList)-1)
-        stdev=math.sqrt(nFactor*(sum/wSum))
-    else:
+    dataList = numpy.asarray(dataList)
+    if dataList.shape[0] < 1:
         if REPORT_ERRORS==True:
-            print("""ERROR: astStats.weightedStdev() : dataList contains < 2 items.""")
-        stdev=None
-    return stdev
+            print("""ERROR: astStats.weightedStdev() : dataList contains < 2 items.  """)
+        return None
+
+    listMean = weightedMean(dataList[:,0], weights=dataList[:,1])
+    variance = numpy.average((dataList[:,0]-listMean)**2,
+            weights=dataList[:,1])
+
+    return numpy.sqrt(variance)
 
 #-----------------------------------------------------------------------------
 def median(dataList):
