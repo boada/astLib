@@ -58,7 +58,7 @@ def dl(z):
     """
 
     DM = dm(z)
-    DL = (1.0+z)*DM
+    DL = (1.0 + z) * DM
 
     return DL
 
@@ -73,7 +73,7 @@ def da(z):
 
     """
     DM = dm(z)
-    DA = DM/(1.0+z)
+    DA = DM / (1.0 + z)
 
     return DA
 
@@ -102,12 +102,12 @@ def dm(z):
     integralValue, integralError = integrate.quad(yn, xMin, xMax)
 
     if OMEGA_K > 0.0:
-        DM = (C_LIGHT/H0 * math.pow(abs(OMEGA_K), -0.5) *
+        DM = (C_LIGHT / H0 * math.pow(abs(OMEGA_K), -0.5) *
             math.sinh(math.sqrt(abs(OMEGA_K)) * integralValue))
     elif OMEGA_K == 0.0:
-        DM = C_LIGHT/H0 * integralValue
+        DM = C_LIGHT / H0 * integralValue
     elif OMEGA_K < 0.0:
-        DM = (C_LIGHT/H0 * math.pow(abs(OMEGA_K), -0.5) *
+        DM = (C_LIGHT / H0 * math.pow(abs(OMEGA_K), -0.5) *
             math.sin(math.sqrt(abs(OMEGA_K)) * integralValue))
 
     return DM
@@ -135,7 +135,7 @@ def dc(z):
 
     integralValue, integralError = integrate.quad(yn, xMin, xMax)
 
-    DC= C_LIGHT/H0*integralValue
+    DC = C_LIGHT / H0 * integralValue
 
     return DC
 
@@ -153,8 +153,8 @@ def dVcdz(z):
 
     """
 
-    dH = C_LIGHT/H0
-    dVcdz=(dH*(math.pow(da(z),2))*(math.pow(1+z,2))/Ez(z))
+    dH = C_LIGHT / H0
+    dVcdz = (dH * (math.pow(da(z), 2)) * (math.pow(1 + z, 2)) / Ez(z))
 
     return dVcdz
 
@@ -182,18 +182,18 @@ def dl2z(distanceMpc):
         zMax = zMax + 5.0
         diff = dl(zMax) - dTarget
 
-    zTrial = zMin + (zMax-zMin)/2.0
+    zTrial = zMin + (zMax - zMin) / 2.0
 
     dTrial = dl(zTrial)
     diff = dTrial - dTarget
     while abs(diff) > toleranceMpc:
 
         if diff > 0:
-            zMax = zMax - (zMax-zMin)/2.0
+            zMax = zMax - (zMax - zMin) / 2.0
         else:
-            zMin = zMin + (zMax-zMin)/2.0
+            zMin = zMin + (zMax - zMin) / 2.0
 
-        zTrial = zMin + (zMax-zMin)/2.0
+        zTrial = zMin + (zMax - zMin) / 2.0
         dTrial = dl(zTrial)
         diff = dTrial - dTarget
 
@@ -223,18 +223,18 @@ def dc2z(distanceMpc):
         zMax = zMax + 5.0
         diff = dc(zMax) - dTarget
 
-    zTrial = zMin + (zMax-zMin)/2.0
+    zTrial = zMin + (zMax - zMin) / 2.0
 
     dTrial = dc(zTrial)
     diff = dTrial - dTarget
     while abs(diff) > toleranceMpc:
 
         if diff > 0:
-            zMax = zMax - (zMax-zMin)/2.0
+            zMax = zMax - (zMax - zMin) / 2.0
         else:
-            zMin = zMin + (zMax-zMin)/2.0
+            zMin = zMin + (zMax - zMin) / 2.0
 
-        zTrial = zMin + (zMax-zMin)/2.0
+        zTrial = zMin + (zMax - zMin) / 2.0
         dTrial = dc(zTrial)
         diff = dTrial - dTarget
 
@@ -262,7 +262,7 @@ def t0():
 
     integralValue, integralError = integrate.quad(yn, xMin, xMax)
 
-    T0 = (1.0/H0*integralValue*3.08e19)/3.16e7/1e9
+    T0 = (1.0 / H0 * integralValue * 3.08e19) / 3.16e7 / 1e9
 
     return T0
 
@@ -281,7 +281,7 @@ def tl(z):
 
     # Integration limits
     xMax = 1.0
-    xMin = 1./(1.+z)
+    xMin = 1. /(1. + z)
 
     # Function to be integrated
     yn = lambda x: (x/math.sqrt(OMEGA_M0*x + OMEGA_L0*math.pow(x, 4) +
@@ -289,7 +289,7 @@ def tl(z):
 
     integralValue, integralError = integrate.quad(yn, xMin, xMax)
 
-    T0 = (1.0/H0*integralValue*3.08e19)/3.16e7/1e9
+    T0 = (1.0 / H0 * integralValue * 3.08e19) / 3.16e7 / 1e9
 
     return T0
 
@@ -337,18 +337,18 @@ def tl2z(tlGyr):
         zMax = zMax + 5.0
         diff = tl(zMax) - tTarget
 
-    zTrial = zMin + (zMax-zMin)/2.0
+    zTrial = zMin + (zMax - zMin) / 2.0
 
     tTrial = tl(zTrial)
     diff = tTrial - tTarget
     while abs(diff) > toleranceGyr:
 
         if diff > 0:
-            zMax = zMax - (zMax-zMin)/2.0
+            zMax = zMax - (zMax - zMin) / 2.0
         else:
-            zMin = zMin + (zMax-zMin)/2.0
+            zMin = zMin + (zMax - zMin) / 2.0
 
-        zTrial = zMin + (zMax-zMin)/2.0
+        zTrial = zMin + (zMax - zMin) / 2.0
         tTrial = tl(zTrial)
         diff = tTrial - tTarget
 
@@ -387,7 +387,7 @@ def absMag(appMag, distMpc):
     @return: absolute magnitude of object
 
     """
-    absMag = appMag - (5.0*math.log10(distMpc*1.0e5))
+    absMag = appMag - (5.0 * math.log10(distMpc * 1.0e5))
 
     return absMag
 
@@ -424,10 +424,10 @@ def Ez2(z):
     # same for all redshifts below 10. But above that, the radiation term
     # begins to dominate. From Peebles 1993.
 
-    Ez2 = (OMEGA_R0 * math.pow(1.0+z, 4) +
-        OMEGA_M0* math.pow(1.0+z, 3) +
-        (1.0- OMEGA_M0- OMEGA_L0) *
-        math.pow(1.0+z, 2) + OMEGA_L0)
+    Ez2 = (OMEGA_R0 * math.pow(1.0 + z, 4) +
+        OMEGA_M0 * math.pow(1.0 + z, 3) +
+        (1.0 - OMEGA_M0 - OMEGA_L0) *
+        math.pow(1.0 + z, 2) + OMEGA_L0)
 
     return Ez2
 
@@ -444,7 +444,7 @@ def OmegaMz(z):
     """
     ez2 = Ez2(z)
 
-    Omega_Mz = (OMEGA_M0*math.pow(1.0+z, 3))/ez2
+    Omega_Mz = (OMEGA_M0 * math.pow(1.0 + z, 3)) / ez2
 
     return Omega_Mz
 
@@ -460,7 +460,7 @@ def OmegaLz(z):
     """
     ez2 = Ez2(z)
 
-    return OMEGA_L0/ez2
+    return OMEGA_L0 / ez2
 
 #------------------------------------------------------------------------------
 def OmegaRz(z):
@@ -474,7 +474,7 @@ def OmegaRz(z):
     """
     ez2 = Ez2(z)
 
-    return OMEGA_R0*math.pow(1+z, 4)/ez2
+    return OMEGA_R0 * math.pow(1 + z, 4) / ez2
 
 #------------------------------------------------------------------------------
 def DeltaVz(z):
@@ -497,8 +497,8 @@ def DeltaVz(z):
 
     if OMEGA_K == 0.0:
         Omega_Mz = OmegaMz(z)
-        deltaVz = (18.0*math.pow(math.pi, 2)+82.0*(Omega_Mz-1.0)-39.0 *
-                math.pow(Omega_Mz-1, 2))
+        deltaVz = (18.0 * math.pow(math.pi, 2) + 82.0*(Omega_Mz - 1.0) - 39.0 *
+                math.pow(Omega_Mz - 1, 2))
         return deltaVz
     else:
         raise Exception("cosmology is NOT flat.")

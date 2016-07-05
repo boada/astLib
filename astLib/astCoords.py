@@ -392,7 +392,7 @@ def convertCoords(inputSystem, outputSystem, coordX, coordY, epoch):
 
     if inputSystem=="J2000" or inputSystem=="B1950" or inputSystem=="GALACTIC":
         if outputSystem=="J2000" or outputSystem=="B1950" or \
-            outputSystem=="GALACTIC":
+                                    outputSystem=="GALACTIC":
 
             outCoords=wcscon.wcscon(wcscon.wcscsys(inputSystem),
                 wcscon.wcscsys(outputSystem), 0, 0, coordX, coordY, epoch)
