@@ -12,5 +12,6 @@ See the LICENSE file for information on distribution.
 
 """
 
-__all__=['astCalc', 'astCoords', 'astImages', 'astPlots', 'astStats', 'astWCS', 'astSED']
+__all__ = ['astCalc', 'astCoords', 'astImages', 'astPlots', 'astStats',
+           'astWCS', 'astSED']
 __version__ = '0.8.0'

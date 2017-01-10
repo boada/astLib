@@ -11,6 +11,7 @@ U{http://astlib.sourceforge.net}
 import numpy
 from PyWCSTools import wcscon
 
+
 #-----------------------------------------------------------------------------
 def hms2decimal(RAString, delimiter):
     """Converts a delimited string of Hours:Minutes:Seconds format into decimal
@@ -32,14 +33,15 @@ def hms2decimal(RAString, delimiter):
     if len(RABits) > 1:
         RAHDecimal = float(RABits[0])
         if len(RABits) > 1:
-            RAHDecimal = RAHDecimal+(float(RABits[1])/60.0)
+            RAHDecimal = RAHDecimal + (float(RABits[1]) / 60.0)
         if len(RABits) > 2:
-            RAHDecimal = RAHDecimal+(float(RABits[2])/3600.0)
-        RADeg = (RAHDecimal/24.0)*360.0
+            RAHDecimal = RAHDecimal + (float(RABits[2]) / 3600.0)
+        RADeg = (RAHDecimal / 24.0) * 360.0
     else:
         RADeg = float(RAString)
 
     return RADeg
+
 
 #-----------------------------------------------------------------------------
 def dms2decimal(decString, delimiter):
@@ -63,18 +65,19 @@ def dms2decimal(decString, delimiter):
         decDeg = float(decBits[0])
         if decBits[0].find("-") != -1:
             if len(decBits) > 1:
-                decDeg = decDeg-(float(decBits[1])/60.0)
+                decDeg = decDeg - (float(decBits[1]) / 60.0)
             if len(decBits) > 2:
-                decDeg = decDeg-(float(decBits[2])/3600.0)
+                decDeg = decDeg - (float(decBits[2]) / 3600.0)
         else:
             if len(decBits) > 1:
-                decDeg = decDeg+(float(decBits[1])/60.0)
+                decDeg = decDeg + (float(decBits[1]) / 60.0)
             if len(decBits) > 2:
-                decDeg = decDeg+(float(decBits[2])/3600.0)
+                decDeg = decDeg + (float(decBits[2]) / 3600.0)
     else:
         decDeg = float(decString)
 
     return decDeg
+
 
 #-----------------------------------------------------------------------------
 def decimal2hms(RADeg, delimiter):
@@ -89,46 +92,47 @@ def decimal2hms(RADeg, delimiter):
     @return: coordinate string in H:M:S format
 
     """
-    hours = (RADeg/360.0)*24
+    hours = (RADeg / 360.0) * 24
     #if hours < 10 and hours >= 1:
     if 1 <= hours < 10:
-        sHours = "0"+str(hours)[0]
+        sHours = "0" + str(hours)[0]
     elif hours >= 10:
         sHours = str(hours)[:2]
     elif hours < 1:
         sHours = "00"
 
     if str(hours).find(".") == -1:
-        mins = float(hours)*60.0
+        mins = float(hours) * 60.0
     else:
-        mins = float(str(hours)[str(hours).index("."):])*60.0
+        mins = float(str(hours)[str(hours).index("."):]) * 60.0
     #if mins<10 and mins>=1:
-    if 1 <= mins<10:
-        sMins = "0"+str(mins)[:1]
+    if 1 <= mins < 10:
+        sMins = "0" + str(mins)[:1]
     elif mins >= 10:
         sMins = str(mins)[:2]
     elif mins < 1:
         sMins = "00"
 
-    secs = (hours-(float(sHours)+float(sMins)/60.0))*3600.0
+    secs = (hours - (float(sHours) + float(sMins) / 60.0)) * 3600.0
     #if secs < 10 and secs>0.001:
     if 0.001 < secs < 10:
-        sSecs = "0"+str(secs)[:str(secs).find(".")+4]
+        sSecs = "0" + str(secs)[:str(secs).find(".") + 4]
     elif secs < 0.0001:
         sSecs = "00.001"
     else:
-        sSecs = str(secs)[:str(secs).find(".")+4]
+        sSecs = str(secs)[:str(secs).find(".") + 4]
     if len(sSecs) < 5:
-        sSecs = sSecs+"00"	# So all to 3dp
+        sSecs = sSecs + "00"  # So all to 3dp
 
     if float(sSecs) == 60.000:
         sSecs = "00.00"
-        sMins = str(int(sMins)+1)
+        sMins = str(int(sMins) + 1)
     if int(sMins) == 60:
         sMins = "00"
         #sDeg = str(int(sDeg)+1)
 
-    return sHours+delimiter+sMins+delimiter+sSecs
+    return sHours + delimiter + sMins + delimiter + sSecs
+
 
 #------------------------------------------------------------------------------
 def decimal2dms(decDeg, delimiter):
@@ -147,85 +151,86 @@ def decimal2dms(decDeg, delimiter):
     if decDeg > 0:
         #if decDeg < 10 and decDeg>=1:
         if 1 <= decDeg < 10:
-            sDeg = "0"+str(decDeg)[0]
+            sDeg = "0" + str(decDeg)[0]
         elif decDeg >= 10:
             sDeg = str(decDeg)[:2]
         elif decDeg < 1:
             sDeg = "00"
 
         if str(decDeg).find(".") == -1:
-            mins = float(decDeg)*60.0
+            mins = float(decDeg) * 60.0
         else:
-            mins = float(str(decDeg)[str(decDeg).index("."):])*60
+            mins = float(str(decDeg)[str(decDeg).index("."):]) * 60
         #if mins<10 and mins>=1:
         if 1 <= mins < 10:
-            sMins = "0"+str(mins)[:1]
+            sMins = "0" + str(mins)[:1]
         elif mins >= 10:
             sMins = str(mins)[:2]
         elif mins < 1:
             sMins = "00"
 
-        secs = (decDeg-(float(sDeg)+float(sMins)/60.0))*3600.0
+        secs = (decDeg - (float(sDeg) + float(sMins) / 60.0)) * 3600.0
         #if secs<10 and secs>0:
         if 0 < secs < 10:
-            sSecs = "0"+str(secs)[:str(secs).find(".")+3]
+            sSecs = "0" + str(secs)[:str(secs).find(".") + 3]
         elif secs < 0.001:
             sSecs = "00.00"
         else:
-            sSecs = str(secs)[:str(secs).find(".")+3]
+            sSecs = str(secs)[:str(secs).find(".") + 3]
         if len(sSecs) < 5:
-            sSecs = sSecs+"0"	# So all to 2dp
+            sSecs = sSecs + "0"  # So all to 2dp
 
         if float(sSecs) == 60.00:
             sSecs = "00.00"
-            sMins = str(int(sMins)+1)
+            sMins = str(int(sMins) + 1)
         if int(sMins) == 60:
             sMins = "00"
-            sDeg = str(int(sDeg)+1)
+            sDeg = str(int(sDeg) + 1)
 
-        return "+"+sDeg+delimiter+sMins+delimiter+sSecs
+        return "+" + sDeg + delimiter + sMins + delimiter + sSecs
 
     else:
         #if decDeg>-10 and decDeg<=-1:
         if -10 < decDeg <= -1:
-            sDeg = "-0"+str(decDeg)[1]
+            sDeg = "-0" + str(decDeg)[1]
         elif decDeg <= -10:
             sDeg = str(decDeg)[:3]
         elif decDeg > -1:
             sDeg = "-00"
 
         if str(decDeg).find(".") == -1:
-            mins = float(decDeg)*-60.0
+            mins = float(decDeg) * -60.0
         else:
-            mins = float(str(decDeg)[str(decDeg).index("."):])*60
+            mins = float(str(decDeg)[str(decDeg).index("."):]) * 60
         #if mins<10 and mins>=1:
         if 1 <= mins < 10:
-            sMins = "0"+str(mins)[:1]
+            sMins = "0" + str(mins)[:1]
         elif mins >= 10:
             sMins = str(mins)[:2]
         elif mins < 1:
             sMins = "00"
 
-        secs = (decDeg-(float(sDeg)-float(sMins)/60.0))*3600.0
+        secs = (decDeg - (float(sDeg) - float(sMins) / 60.0)) * 3600.0
         #if secs>-10 and secs<0:
         # so don't get minus sign
         if -10 < secs < 0:
-            sSecs = "0"+str(secs)[1:str(secs).find(".")+3]
+            sSecs = "0" + str(secs)[1:str(secs).find(".") + 3]
         elif secs > -0.001:
             sSecs = "00.00"
         else:
-            sSecs = str(secs)[1:str(secs).find(".")+3]
+            sSecs = str(secs)[1:str(secs).find(".") + 3]
         if len(sSecs) < 5:
-            sSecs = sSecs+"0"	# So all to 2dp
+            sSecs = sSecs + "0"  # So all to 2dp
 
         if float(sSecs) == 60.00:
             sSecs = "00.00"
-            sMins = str(int(sMins)+1)
+            sMins = str(int(sMins) + 1)
         if int(sMins) == 60:
             sMins = "00"
-            sDeg = str(int(sDeg)-1)
+            sDeg = str(int(sDeg) - 1)
 
-        return sDeg+delimiter+sMins+delimiter+sSecs
+        return sDeg + delimiter + sMins + delimiter + sSecs
+
 
 #-----------------------------------------------------------------------------
 def eq2cart(RA, DEC, r):
@@ -254,6 +259,7 @@ def eq2cart(RA, DEC, r):
 
     return x, y, z
 
+
 #-----------------------------------------------------------------------------
 def cart2eq(x, y, z):
     """
@@ -272,7 +278,7 @@ def cart2eq(x, y, z):
 
     """
 
-    r = numpy.sqrt(numpy.power(x,2) + numpy.power(y,2) + numpy.power(z,2))
+    r = numpy.sqrt(numpy.power(x, 2) + numpy.power(y, 2) + numpy.power(z, 2))
     ra = numpy.arctan2(y, x)
     try:
         ra[ra < 0] = 2.0 * numpy.pi + ra[ra < 0]
@@ -284,6 +290,7 @@ def cart2eq(x, y, z):
     dec = numpy.degrees(dec)
 
     return ra, dec, r
+
 
 #-----------------------------------------------------------------------------
 def calcAngSepDeg(RADeg1, decDeg1, RADeg2, decDeg2):
@@ -312,14 +319,15 @@ def calcAngSepDeg(RADeg1, decDeg1, RADeg2, decDeg2):
 
     #dRA = cRA-gRA
     #dDec = gDec-cDec
-    cosC = ((numpy.sin(gDec)*numpy.sin(cDec)) +
-        (numpy.cos(gDec)*numpy.cos(cDec) * numpy.cos(gRA-cRA)))
-    x = (numpy.cos(cDec)*numpy.sin(gRA-cRA))/cosC
-    y = (((numpy.cos(gDec)*numpy.sin(cDec)) - (numpy.sin(gDec) *
-        numpy.cos(cDec)*numpy.cos(gRA-cRA)))/cosC)
-    r = numpy.degrees(numpy.sqrt(x*x+y*y))
+    cosC = ((numpy.sin(gDec) * numpy.sin(cDec)) +
+            (numpy.cos(gDec) * numpy.cos(cDec) * numpy.cos(gRA - cRA)))
+    x = (numpy.cos(cDec) * numpy.sin(gRA - cRA)) / cosC
+    y = (((numpy.cos(gDec) * numpy.sin(cDec)) -
+          (numpy.sin(gDec) * numpy.cos(cDec) * numpy.cos(gRA - cRA))) / cosC)
+    r = numpy.degrees(numpy.sqrt(x * x + y * y))
 
     return r
+
 
 #-----------------------------------------------------------------------------
 def shiftRADec(ra1, dec1, deltaRA, deltaDec):
@@ -341,23 +349,23 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
 
     """
 
-    d2r = numpy.pi/180.
-    as2r = numpy.pi/648000.
+    d2r = numpy.pi / 180.
+    as2r = numpy.pi / 648000.
 
     # Convert everything to radians
     #rara1 = ra1*d2r
-    dcrad1 = dec1*d2r
-    shiftRArad = deltaRA*as2r
+    dcrad1 = dec1 * d2r
+    shiftRArad = deltaRA * as2r
     #shiftDCrad = deltaDec*as2r
 
     # Shift!
     #deldec2 = 0.0
     sindis = numpy.sin(shiftRArad / 2.0)
     sindelRA = sindis / numpy.cos(dcrad1)
-    delra = 2.0*numpy.arcsin(sindelRA) / d2r
+    delra = 2.0 * numpy.arcsin(sindelRA) / d2r
 
     # Make changes
-    ra2 = ra1+delra
+    ra2 = ra1 + delra
     dec2 = dec1 + deltaDec / 3600.0
 
     # Make sure 0 < RA < 360.
@@ -367,6 +375,7 @@ def shiftRADec(ra1, dec1, deltaRA, deltaDec):
         ra2 += 360
 
     return ra2, dec2
+
 
 #-----------------------------------------------------------------------------
 def convertCoords(inputSystem, outputSystem, coordX, coordY, epoch):
@@ -390,17 +399,19 @@ def convertCoords(inputSystem, outputSystem, coordX, coordY, epoch):
 
     """
 
-    if inputSystem=="J2000" or inputSystem=="B1950" or inputSystem=="GALACTIC":
-        if outputSystem=="J2000" or outputSystem=="B1950" or \
-                                    outputSystem=="GALACTIC":
+    if inputSystem == "J2000" or inputSystem == "B1950" or inputSystem == "GALACTIC":
+        if outputSystem == "J2000" or outputSystem == "B1950" or \
+                                    outputSystem == "GALACTIC":
 
-            outCoords=wcscon.wcscon(wcscon.wcscsys(inputSystem),
-                wcscon.wcscsys(outputSystem), 0, 0, coordX, coordY, epoch)
+            outCoords = wcscon.wcscon(
+                wcscon.wcscsys(inputSystem), wcscon.wcscsys(outputSystem), 0,
+                0, coordX, coordY, epoch)
 
             return outCoords
 
     raise Exception("inputSystem and outputSystem must be 'J2000', 'B1950'"
                     "or 'GALACTIC'")
+
 
 #-----------------------------------------------------------------------------
 def calcSkyArea(RA1, RA2, DEC1, DEC2, units=True):
@@ -430,9 +441,10 @@ def calcSkyArea(RA1, RA2, DEC1, DEC2, units=True):
 
     if units:
         return abs(RA1 - RA2) * abs(numpy.sin(DEC1) - numpy.sin(DEC2)) *\
-            (180/numpy.pi)**2
+                (180 / numpy.pi)**2
     else:
         return abs(RA1 - RA2) * abs(numpy.sin(DEC1) - numpy.sin(DEC2))
+
 
 #-----------------------------------------------------------------------------
 def calcRADecSearchBox(RADeg, decDeg, radiusSkyDeg):
@@ -457,33 +469,33 @@ def calcRADecSearchBox(RADeg, decDeg, radiusSkyDeg):
     tolerance = 1e-5  # in degrees on sky
     targetHalfSizeSkyDeg = radiusSkyDeg
     funcCalls = ["calcAngSepDeg(RADeg, decDeg, guess, decDeg)",
-               "calcAngSepDeg(RADeg, decDeg, guess, decDeg)",
-               "calcAngSepDeg(RADeg, decDeg, RADeg, guess)",
-               "calcAngSepDeg(RADeg, decDeg, RADeg, guess)"]
+                 "calcAngSepDeg(RADeg, decDeg, guess, decDeg)",
+                 "calcAngSepDeg(RADeg, decDeg, RADeg, guess)",
+                 "calcAngSepDeg(RADeg, decDeg, RADeg, guess)"]
     coords = [RADeg, RADeg, decDeg, decDeg]
     signs = [1.0, -1.0, 1.0, -1.0]
     results = []
     for f, c, sign in zip(funcCalls, coords, signs):
         # Initial guess range
-        maxGuess = sign*targetHalfSizeSkyDeg*10.0
-        minGuess = sign*targetHalfSizeSkyDeg/10.0
-        guessStep = (maxGuess-minGuess)/10.0
-        guesses = numpy.arange(minGuess+c, maxGuess+c, guessStep)
+        maxGuess = sign * targetHalfSizeSkyDeg * 10.0
+        minGuess = sign * targetHalfSizeSkyDeg / 10.0
+        guessStep = (maxGuess - minGuess) / 10.0
+        guesses = numpy.arange(minGuess + c, maxGuess + c, guessStep)
         for i in range(50):
             minSizeDiff = 1e6
             bestGuess = None
             for guess in guesses:
-                sizeDiff = abs(eval(f)-targetHalfSizeSkyDeg)
+                sizeDiff = abs(eval(f) - targetHalfSizeSkyDeg)
                 if sizeDiff < minSizeDiff:
                     minSizeDiff = sizeDiff
                     bestGuess = guess
             if minSizeDiff < tolerance:
                 break
             else:
-                guessRange = abs((maxGuess-minGuess))
-                maxGuess = bestGuess+guessRange/4.0
-                minGuess = bestGuess-guessRange/4.0
-                guessStep = (maxGuess-minGuess)/10.0
+                guessRange = abs((maxGuess - minGuess))
+                maxGuess = bestGuess + guessRange / 4.0
+                minGuess = bestGuess - guessRange / 4.0
+                guessStep = (maxGuess - minGuess) / 10.0
                 guesses = numpy.arange(minGuess, maxGuess, guessStep)
         results.append(bestGuess)
 
@@ -493,6 +505,7 @@ def calcRADecSearchBox(RADeg, decDeg, radiusSkyDeg):
     decMin = results[3]
 
     return [RAMin, RAMax, decMin, decMax]
+
 
 def aitoff(lon, lat):
     """
@@ -513,23 +526,27 @@ def aitoff(lon, lat):
     lat -- Traditional latitude in radians, in range [-pi/2:pi/2]
     """
 
+    def sinc(x):
+        # a quick unnormalized sinc function, with discontinuity removed
+        if not x:
+            return 0
+        else:
+            return numpy.sin(x) / x
+
     x = numpy.zeros_like(lon)
     y = numpy.zeros_like(lat)
 
     # check if the input values are in the range
     if lon > numpy.pi or lon < -numpy.pi or lat > numpy.pi / 2 or \
-        lat < -numpy.pi /2 :
+            lat < -numpy.pi / 2:
         print('Aitoff: Input longitude and latitude out of range.\n')
         print('           lon: [-pi,pi]; lat: [-pi/2,pi/2].\n')
         return None
 
     # take care of the sigularity at (0, 0), otherwise division by zero may
     # happen
-    if lon == 0 and lat ==0:
+    if lon == 0 and lat == 0:
         return 0.0, 0.0
-
-    # a quick inline unnormalized sinc function, with discontinuity removed
-    sinc = lambda x: 0 if x == 0 else numpy.sin(x) / x
 
     alpha = numpy.acos(numpy.cos(lat) * numpy.cos(lon / 2.0))
 

@@ -25,10 +25,10 @@ suggested.
 
 import math
 import numpy
-#import sys
-#import IPython
+import collections
 
-REPORT_ERRORS=True
+REPORT_ERRORS = True
+
 
 #-----------------------------------------------------------------------------
 def mean(dataList):
@@ -41,6 +41,7 @@ def mean(dataList):
 
     """
     return numpy.mean(dataList)
+
 
 #-----------------------------------------------------------------------------
 def weightedMean(dataList):
@@ -56,9 +57,10 @@ def weightedMean(dataList):
     """
 
     dataList = numpy.asarray(dataList)
-    mean = numpy.average(dataList[:,0], weights=dataList[:,1])
+    mean = numpy.average(dataList[:, 0], weights=dataList[:, 1])
 
     return mean
+
 
 #-----------------------------------------------------------------------------
 def stdev(dataList):
@@ -72,6 +74,7 @@ def stdev(dataList):
     """
     return numpy.std(dataList)
 
+
 #-----------------------------------------------------------------------------
 def rms(dataList):
     """Calculates the root mean square of a list of numbers.
@@ -82,14 +85,15 @@ def rms(dataList):
     @return: root mean square
 
     """
-#    dataListSq = []
-#    for item in dataList:
-#        dataListSq.append(math.pow(item, 2))
+    #    dataListSq = []
+    #    for item in dataList:
+    #        dataListSq.append(math.pow(item, 2))
     dataListSq = [math.pow(item, 2) for item in dataList]
     listMeanSq = mean(dataListSq)
     rms = math.sqrt(listMeanSq)
 
     return rms
+
 
 #-----------------------------------------------------------------------------
 def weightedStdev(dataList):
@@ -108,15 +112,17 @@ def weightedStdev(dataList):
 
     dataList = numpy.asarray(dataList)
     if dataList.shape[0] < 1:
-        if REPORT_ERRORS==True:
-            print("""ERROR: astStats.weightedStdev() : dataList contains < 2 items.  """)
+        if REPORT_ERRORS:
+            print("ERROR: astStats.weightedStdev() : "
+                  "dataList contains < 2 items.  ")
         return None
 
-    listMean = weightedMean(dataList[:,0], weights=dataList[:,1])
-    variance = numpy.average((dataList[:,0]-listMean)**2,
-            weights=dataList[:,1])
+    listMean = weightedMean(dataList[:, 0], weights=dataList[:, 1])
+    variance = numpy.average((dataList[:, 0] - listMean)**2,
+                             weights=dataList[:, 1])
 
     return numpy.sqrt(variance)
+
 
 #-----------------------------------------------------------------------------
 def median(dataList):
@@ -130,6 +136,7 @@ def median(dataList):
     """
     return numpy.median(dataList)
 
+
 #-----------------------------------------------------------------------------
 def modeEstimate(dataList):
     """Returns an estimate of the mode of a set of values by
@@ -141,9 +148,10 @@ def modeEstimate(dataList):
     @return: estimate of mode average
 
     """
-    mode=(3*median(dataList))-(2*mean(dataList))
+    mode = (3 * median(dataList)) - (2 * mean(dataList))
 
     return mode
+
 
 #-----------------------------------------------------------------------------
 def MAD(dataList):
@@ -155,23 +163,24 @@ def MAD(dataList):
     @return: median absolute deviation
 
     """
-#    listMedian=median(dataList)
+    #    listMedian=median(dataList)
 
     # Calculate |x-M| values
-#    diffModuli=[]
-#    for item in dataList:
-#        diffModuli.append(math.fabs(item-listMedian))
+    #    diffModuli=[]
+    #    for item in dataList:
+    #        diffModuli.append(math.fabs(item-listMedian))
 
-#    MAD=median(diffModuli)
-#    return MAD
+    #    MAD=median(diffModuli)
+    #    return MAD
 
-#    arr = np.ma.array(dataList).compress() # speed up not using this step
+    #    arr = np.ma.array(dataList).compress() # speed up not using this step
     med = numpy.median(dataList)
     try:
         return numpy.median(numpy.fabs(dataList - med))
     except TypeError:
         dataList = numpy.array(dataList)
         return numpy.median(numpy.fabs(dataList - med))
+
 
 #-----------------------------------------------------------------------------
 def normalizdMAD(dataList):
@@ -187,6 +196,7 @@ def normalizdMAD(dataList):
     """
 
     return 1.4826 * MAD(dataList)
+
 
 #-----------------------------------------------------------------------------
 def biweightLocation(dataList, tuningConstant=6.0):
@@ -208,33 +218,34 @@ def biweightLocation(dataList, tuningConstant=6.0):
         return numpy.nan
 
     C = tuningConstant
-#    listMedian = median(dataList)
+    #    listMedian = median(dataList)
     listMedian = numpy.median(dataList)
     listMAD = MAD(dataList)
     if listMAD != 0:
         uValues = []
         for item in dataList:
-            uValues.append((item-listMedian)/(C*listMAD))
+            uValues.append((item - listMedian) / (C * listMAD))
 
-        top=0		# numerator equation (5) Beers et al if you like
-        bottom=0	# denominator
+        top = 0  # numerator equation (5) Beers et al if you like
+        bottom = 0  # denominator
         for i in range(len(uValues)):
-            if math.fabs(uValues[i])<=1.0:
-                top=top+((dataList[i]-listMedian) \
-                    *(1.0-(uValues[i]*uValues[i])) \
-                    *(1.0-(uValues[i]*uValues[i])))
+            if math.fabs(uValues[i]) <= 1.0:
+                top = top + ((dataList[i] - listMedian) *
+                             (1.0 - (uValues[i] * uValues[i])) *
+                             (1.0 - (uValues[i] * uValues[i])))
 
-                bottom=bottom+((1.0-(uValues[i]*uValues[i])) \
-                    *(1.0-(uValues[i]*uValues[i])))
+                bottom = bottom + ((1.0 - (uValues[i] * uValues[i])) *
+                                   (1.0 - (uValues[i] * uValues[i])))
 
-        CBI=listMedian + (top/bottom)
+        CBI = listMedian + (top / bottom)
 
     else:
-        if REPORT_ERRORS==True:
-            print("""ERROR: astStats: biweightLocation() : MAD() returned 0.""")
+        if REPORT_ERRORS:
+            print("ERROR: astStats: biweightLocation() : MAD() returned 0.")
         return None
 
     return CBI
+
 
 #-----------------------------------------------------------------------------
 def biweightScale(dataList, tuningConstant=9.0):
@@ -251,7 +262,7 @@ def biweightScale(dataList, tuningConstant=9.0):
     @note: Returns None if an error occurs.
 
     """
-    C=tuningConstant
+    C = tuningConstant
 
     # Calculate |x-M| values and u values
     listMedian = median(dataList)
@@ -264,29 +275,30 @@ def biweightScale(dataList, tuningConstant=9.0):
         try:
             uValues.append((item - listMedian) / (C * listMAD))
         except ZeroDivisionError:
-            if REPORT_ERRORS == True:
-                print("""ERROR: astStats.biweightScale() """)
-                print(""": divide by zero error.""")
+            if REPORT_ERRORS:
+                print("ERROR: astStats.biweightScale(): divide by zero error.")
             return None
 
-    top = 0		# numerator equation (9) Beers etal 1990
-    bottom = 0          # denominator equation (9) Beers etal 1990
-    valCount = 0	# Count values where u<1 only
+    top = 0  # numerator equation (9) Beers etal 1990
+    bottom = 0  # denominator equation (9) Beers etal 1990
+    valCount = 0  # Count values where u<1 only
 
     for i in range(len(uValues)):
         # Skip u values >1
         if math.fabs(uValues[i]) <= 1.0:
             u2Term = 1.0 - math.pow(uValues[i], 2)
             u4Term = math.pow(u2Term, 4)
-            top += math.pow(diffModuli[i],2) * u4Term
+            top += math.pow(diffModuli[i], 2) * u4Term
             bottom += (u2Term * (1.0 - (5.0 * math.pow(uValues[i], 2))))
             valCount += 1
 
     top = math.sqrt(top)
     bottom = math.fabs(bottom)
 
-    SBI = math.pow(float(valCount), 0.5) * (top/bottom)
+    SBI = math.pow(float(valCount), 0.5) * (top / bottom)
     return SBI
+
+
 #-----------------------------------------------------------------------------
 def biweightScale_test(dataList, tuningConstant=9.0):
     """Calculates the biweight scale estimator (like a robust standard
@@ -302,7 +314,7 @@ def biweightScale_test(dataList, tuningConstant=9.0):
     @note: Returns None if an error occurs.
 
     """
-    C=tuningConstant
+    C = tuningConstant
 
     # Calculate |x-M| values and u values
     listMedian = median(dataList)
@@ -315,29 +327,28 @@ def biweightScale_test(dataList, tuningConstant=9.0):
         try:
             uValues.append((item - listMedian) / (C * listMAD))
         except ZeroDivisionError:
-            if REPORT_ERRORS == True:
-                print("""ERROR: astStats.biweightScale() """)
-                print(""": divide by zero error.""")
+            if REPORT_ERRORS:
+                print("ERROR: astStats.biweightScale(): divide by zero error.")
             return None
 
-    top = 0		# numerator equation (9) Beers etal 1990
-    bottom = 0          # denominator equation (9) Beers etal 1990
-    valCount = 0	# Count values where u<1 only
+    top = 0  # numerator equation (9) Beers etal 1990
+    bottom = 0  # denominator equation (9) Beers etal 1990
+    valCount = 0  # Count values where u<1 only
 
     for i in range(len(uValues)):
         # Skip u values >1
         if math.fabs(uValues[i]) <= 1.0:
             u2Term = 1.0 - math.pow(uValues[i], 2)
             u4Term = math.pow(u2Term, 4)
-            top += math.pow(diffModuli[i],2) * u4Term
+            top += math.pow(diffModuli[i], 2) * u4Term
             bottom += (u2Term * (1.0 - (5.0 * math.pow(uValues[i], 2))))
             valCount += 1
 
     top = math.sqrt(top)
     #bottom = math.fabs(bottom)
-    bottom = math.sqrt(bottom * ( bottom - 1.))
+    bottom = math.sqrt(bottom * (bottom - 1.))
 
-    SBI = math.pow(float(valCount), 0.5) * (top/bottom)
+    SBI = math.pow(float(valCount), 0.5) * (top / bottom)
     return SBI
 
 
@@ -362,49 +373,51 @@ def biweightClipped(dataList, tuningConstant, sigmaCut):
 
     """
 
-    iterations=0
-    clippedValues=[]
+    iterations = 0
+    clippedValues = []
     for row in dataList:
-        if type(row)==list:
+        if type(row) == list:
             clippedValues.append(row[0])
         else:
             clippedValues.append(row)
 
-    while iterations<11 and len(clippedValues)>5:
+    while iterations < 11 and len(clippedValues) > 5:
 
-        cbi=biweightLocation(clippedValues, tuningConstant)
-        sbi=biweightScale(clippedValues, tuningConstant)
+        cbi = biweightLocation(clippedValues, tuningConstant)
+        sbi = biweightScale(clippedValues, tuningConstant)
 
         # check for either biweight routine falling over
         # happens when feed in lots of similar numbers
         # e.g. when bootstrapping with a small sample
-        if cbi==None or sbi==None:
+        if cbi is None or sbi is None:
 
-            if REPORT_ERRORS==True:
-                print("""ERROR: astStats : biweightClipped() :
-                divide by zero error.""")
+            if REPORT_ERRORS:
+                print("ERROR: astStats.biweightClipped(): divide by zero error.")
 
             return None
 
         else:
 
-            clippedValues=[]
-            clippedData=[]
+            clippedValues = []
+            clippedData = []
             for row in dataList:
-                if type(row)==list:
-                    if row[0]>cbi-(sigmaCut*sbi) \
-                    and row[0]<cbi+(sigmaCut*sbi):
+                if type(row) == list:
+                    if row[0] > cbi - (sigmaCut * sbi) and \
+                            row[0] < cbi + (sigmaCut * sbi):
                         clippedValues.append(row[0])
                         clippedData.append(row)
                 else:
-                    if row>cbi-(sigmaCut*sbi) \
-                    and row<cbi+(sigmaCut*sbi):
+                    if row > cbi - (sigmaCut * sbi) and \
+                            row < cbi + (sigmaCut * sbi):
                         clippedValues.append(row)
                         clippedData.append(row)
 
-        iterations=iterations+1
+        iterations = iterations + 1
 
-    return {'biweightLocation':cbi, 'biweightScale':sbi, 'dataList':clippedData}
+    return {'biweightLocation': cbi,
+            'biweightScale': sbi,
+            'dataList': clippedData}
+
 
 #-----------------------------------------------------------------------------
 def biweightTransform(dataList, tuningConstant):
@@ -420,23 +433,24 @@ def biweightTransform(dataList, tuningConstant):
     @return: list of biweights
 
     """
-    C=tuningConstant
+    C = tuningConstant
 
     # Calculate |x-M| values and u values
-    listMedian=abs(median(dataList))
-    cutoff=C*listMedian
-    biweights=[]
+    listMedian = abs(median(dataList))
+    cutoff = C * listMedian
+    biweights = []
     for item in dataList:
-        if abs(item)<cutoff:
+        if abs(item) < cutoff:
             biweights.append([item,
-            (1.0-((item/cutoff)*(item/cutoff))) \
-            *(1.0-((item/cutoff)*(item/cutoff)))])
+                              (1.0 - ((item / cutoff) * (item / cutoff))) *
+                              (1.0 - ((item / cutoff) * (item / cutoff)))])
         else:
             biweights.append([item, 0.0])
 
     return biweights
 
 #-----------------------------------------------------------------------------
+
 
 def gapperEstimator(dataList):
     """ Calculates the Gapper Estimator (like a robust standard deviation) on a
@@ -462,13 +476,13 @@ def gapperEstimator(dataList):
     diff = numpy.diff(dataList)
 
     # weight the list of differences
-    weightedDiff = [i * (len(dataList)-i) * g for i, g in enumerate(diff)]
+    weightedDiff = [i * (len(dataList) - i) * g for i, g in enumerate(diff)]
 
-    return math.sqrt(math.pi)/(len(dataList)*(len(dataList)-1)) *\
+    return math.sqrt(math.pi) / (len(dataList) * (len(dataList) - 1)) *\
             sum(weightedDiff)
 
-
 #-----------------------------------------------------------------------------
+
 
 def OLSFit(dataList):
     """Performs an ordinary least squares fit on a two dimensional list of
@@ -483,49 +497,53 @@ def OLSFit(dataList):
     @note: Returns None if an error occurs.
 
     """
-    sumX=0
-    sumY=0
-    sumXY=0
-    sumXX=0
-    n=float(len(dataList))
+    sumX = 0
+    sumY = 0
+    sumXY = 0
+    sumXX = 0
+    n = float(len(dataList))
     if n > 2:
         for item in dataList:
-            sumX=sumX+item[0]
-            sumY=sumY+item[1]
-            sumXY=sumXY+(item[0]*item[1])
-            sumXX=sumXX+(item[0]*item[0])
-        m=((n*sumXY)-(sumX*sumY))/((n*sumXX)-(sumX*sumX))
-        c=((sumXX*sumY)-(sumX*sumXY))/((n*sumXX)-(sumX*sumX))
+            sumX = sumX + item[0]
+            sumY = sumY + item[1]
+            sumXY = sumXY + (item[0] * item[1])
+            sumXX = sumXX + (item[0] * item[0])
+        m = ((n * sumXY) - (sumX * sumY)) / ((n * sumXX) - (sumX * sumX))
+        c = ((sumXX * sumY) - (sumX * sumXY)) / ((n * sumXX) - (sumX * sumX))
 
-        sumRes=0
+        sumRes = 0
         for item in dataList:
 
-            sumRes=sumRes+((item[1]-(m*item[0])-c) \
-            *(item[1]-(m*item[0])-c))
+            sumRes = sumRes + ((item[1] - (m * item[0]) - c) *
+                               (item[1] - (m * item[0]) - c))
 
-        sigma=math.sqrt((1.0/(n-2))*sumRes)
+        sigma = math.sqrt((1.0 / (n - 2)) * sumRes)
 
         try:
-            mSigma=(sigma*math.sqrt(n))/math.sqrt((n*sumXX)-(sumX*sumX))
+            mSigma = (sigma *
+                      math.sqrt(n)) / math.sqrt((n * sumXX) - (sumX * sumX))
         except:
-            mSigma=numpy.nan
+            mSigma = numpy.nan
         try:
-            cSigma=(sigma*math.sqrt(sumXX))/math.sqrt((n*sumXX)-(sumX*sumX))
+            cSigma = (
+                sigma *
+                math.sqrt(sumXX)) / math.sqrt((n * sumXX) - (sumX * sumX))
         except:
-            cSigma=numpy.nan
+            cSigma = numpy.nan
     else:
-        if REPORT_ERRORS==True:
-            print("""ERROR: astStats.OLSFit() : dataList contains < 3 items.""")
+        if REPORT_ERRORS:
+            print("ERROR: astStats.OLSFit(): dataList contains < 3 items.")
 
         return None
 
-    return {'slope':m,
-            'intercept':c,
-            'slopeError':mSigma,
-            'interceptError':cSigma}
+    return {'slope': m,
+            'intercept': c,
+            'slopeError': mSigma,
+            'interceptError': cSigma}
+
 
 #-----------------------------------------------------------------------------
-def clippedMeanStdev(dataList, sigmaCut = 3.0, maxIterations = 10.0):
+def clippedMeanStdev(dataList, sigmaCut=3.0, maxIterations=10.0):
     """Calculates the clipped mean and stdev of a list of numbers.
 
     @type dataList: list
@@ -539,26 +557,29 @@ def clippedMeanStdev(dataList, sigmaCut = 3.0, maxIterations = 10.0):
 
     """
 
-    listCopy=[]
+    listCopy = []
     for d in dataList:
         listCopy.append(d)
-    listCopy=numpy.array(listCopy)
+    listCopy = numpy.array(listCopy)
 
-    iterations=0
+    iterations = 0
     while iterations < maxIterations and len(listCopy) > 4:
 
-        m=listCopy.mean()
-        s=listCopy.std()
+        m = listCopy.mean()
+        s = listCopy.std()
 
-        listCopy=listCopy[numpy.less(abs(listCopy), abs(m+sigmaCut*s))]
+        listCopy = listCopy[numpy.less(abs(listCopy), abs(m + sigmaCut * s))]
 
-        iterations=iterations+1
+        iterations = iterations + 1
 
-    return {'clippedMean': m, 'clippedStdev': s, 'numPoints':
+    return {'clippedMean': m,
+            'clippedStdev': s,
+            'numPoints':
             listCopy.shape[0]}
 
-    #-----------------------------------------------------------------------------
-def clippedMedianStdev(dataList, sigmaCut = 3.0, maxIterations = 10.0):
+
+#-----------------------------------------------------------------------------
+def clippedMedianStdev(dataList, sigmaCut=3.0, maxIterations=10.0):
     """Calculates the clipped mean and stdev of a list of numbers.
 
     @type dataList: list
@@ -582,10 +603,12 @@ def clippedMedianStdev(dataList, sigmaCut = 3.0, maxIterations = 10.0):
 
         m = median(listCopy)
         s = listCopy.std()
-        listCopy = listCopy[numpy.less(abs(listCopy), abs(m+sigmaCut*s))]
+        listCopy = listCopy[numpy.less(abs(listCopy), abs(m + sigmaCut * s))]
         iterations += 1
 
-    return {'clippedMedian': m, 'clippedStdev': s, 'numPoints':
+    return {'clippedMedian': m,
+            'clippedStdev': s,
+            'numPoints':
             listCopy.shape[0]}
 
 
@@ -605,40 +628,41 @@ def clippedWeightedLSFit(dataList, sigmaCut):
 
     """
 
-    iterations=0
-    clippedValues=[]
+    iterations = 0
+    clippedValues = []
     for row in dataList:
         clippedValues.append(row)
 
-    while iterations<11 and len(clippedValues)>4:
+    while iterations < 11 and len(clippedValues) > 4:
 
-        fitResults=weightedLSFit(clippedValues, "errors")
+        fitResults = weightedLSFit(clippedValues, "errors")
 
-        if fitResults['slope'] == None:
+        if fitResults['slope'] is None:
 
-            if REPORT_ERRORS==True:
-                print("""ERROR: astStats : clippedWeightedLSFit() :
-                divide by zero error.""")
+            if REPORT_ERRORS:
+                print("ERROR: astStats.clippedWeightedLSFit(): "
+                      "divide by zero error.")
 
             return None
 
         else:
 
-            clippedValues=[]
+            clippedValues = []
             for row in dataList:
 
                 # Trim points more than sigmaCut*sigma away from the fitted line
-                fit=fitResults['slope']*row[0]+fitResults['intercept']
-                res=row[1]-fit
-                if abs(res)/row[2] < sigmaCut:
+                fit = fitResults['slope'] * row[0] + fitResults['intercept']
+                res = row[1] - fit
+                if abs(res) / row[2] < sigmaCut:
                     clippedValues.append(row)
 
-        iterations=iterations+1
+        iterations = iterations + 1
 
     # store the number of values that made it through the clipping process
-    fitResults['numDataPoints']=len(clippedValues)
+    fitResults['numDataPoints'] = len(clippedValues)
 
     return fitResults
+
 
 #-----------------------------------------------------------------------------
 def weightedLSFit(dataList, weightType):
@@ -661,95 +685,96 @@ def weightedLSFit(dataList, weightType):
 
     """
     if weightType == "weights":
-        sumW=0
-        sumWX=0
-        sumWY=0
-        sumWXY=0
-        sumWXX=0
-        n=float(len(dataList))
+        sumW = 0
+        sumWX = 0
+        sumWY = 0
+        sumWXY = 0
+        sumWXX = 0
+        n = float(len(dataList))
         if n > 4:
             for item in dataList:
-                W=item[3]
-                sumWX=sumWX+(W*item[0])
-                sumWY=sumWY+(W*item[1])
-                sumWXY=sumWXY+(W*item[0]*item[1])
-                sumWXX=sumWXX+(W*item[0]*item[0])
-                sumW=sumW+W
+                W = item[3]
+                sumWX = sumWX + (W * item[0])
+                sumWY = sumWY + (W * item[1])
+                sumWXY = sumWXY + (W * item[0] * item[1])
+                sumWXX = sumWXX + (W * item[0] * item[0])
+                sumW = sumW + W
                 #print sumW, sumWXX, sumWX
 
             try:
-                m=((sumW*sumWXY)-(sumWX*sumWY)) \
-                /((sumW*sumWXX)-(sumWX*sumWX))
+                m = ((sumW * sumWXY) - (sumWX * sumWY)) / ((sumW * sumWXX) -
+                                                          (sumWX * sumWX))
             except ZeroDivisionError:
-                if REPORT_ERRORS == True:
-                    print("ERROR: astStats.weightedLSFit() : divide by zero error.")
+                if REPORT_ERRORS:
+                    print("ERROR: astStats.weightedLSFit(): divide by zero error.")
                 return None
 
             try:
-                c=((sumWXX*sumWY)-(sumWX*sumWXY)) \
-                /((sumW*sumWXX)-(sumWX*sumWX))
+                c = ((sumWXX * sumWY) - (sumWX * sumWXY)) / ((sumW * sumWXX) -
+                                                          (sumWX * sumWX))
             except ZeroDivisionError:
-                if REPORT_ERRORS == True:
-                    print("ERROR: astStats.weightedLSFit() : divide by zero error.")
+                if REPORT_ERRORS:
+                    print("ERROR: astStats.weightedLSFit(): divide by zero error.")
                 return None
 
-            sumRes=0
+            sumRes = 0
             for item in dataList:
 
-                sumRes=sumRes+((item[1]-(m*item[0])-c) \
-                *(item[1]-(m*item[0])-c))
+                sumRes = sumRes + ((item[1] - (m * item[0]) - c) * (item[1] -
+                                                            (m * item[0]) - c))
 
-            sigma=math.sqrt((1.0/(n-2))*sumRes)
+            sigma = math.sqrt((1.0 / (n - 2)) * sumRes)
 
             # Can get div0 errors here so check
             # When biweight fitting converges this shouldn't happen
-            if (n*sumWXX)-(sumWX*sumWX)>0.0:
+            if (n * sumWXX) - (sumWX * sumWX) > 0.0:
 
-                mSigma=(sigma*math.sqrt(n)) \
-                    /math.sqrt((n*sumWXX)-(sumWX*sumWX))
+                mSigma = (sigma * math.sqrt(n)) / math.sqrt((n * sumWXX) -
+                                                            (sumWX * sumWX))
 
-                cSigma=(sigma*math.sqrt(sumWXX)) \
-                    /math.sqrt((n*sumWXX)-(sumWX*sumWX))
+                cSigma = (sigma * math.sqrt(sumWXX)) / math.sqrt((n * sumWXX) -
+                                                                 (sumWX * sumWX))
 
             else:
 
-                if REPORT_ERRORS==True:
-                    print("""ERROR: astStats.weightedLSFit()
-                    : divide by zero error.""")
+                if REPORT_ERRORS:
+                    print("ERROR: astStats.weightedLSFit(): "
+                          "divide by zero error.")
                 return None
 
         else:
-            if REPORT_ERRORS==True:
-                print("""ERROR: astStats.weightedLSFit() :
-                dataList contains < 5 items.""")
+            if REPORT_ERRORS:
+                print("ERROR: astStats.weightedLSFit(): "
+                      "dataList contains < 5 items.")
             return None
 
     elif weightType == "errors":
-        sumX=0
-        sumY=0
-        sumXY=0
-        sumXX=0
-        sumSigma=0
-        n=float(len(dataList))
+        sumX = 0
+        sumY = 0
+        sumXY = 0
+        sumXX = 0
+        sumSigma = 0
+        n = float(len(dataList))
         for item in dataList:
-            sumX=sumX+(item[0]/(item[2]*item[2]))
-            sumY=sumY+(item[1]/(item[2]*item[2]))
-            sumXY=sumXY+((item[0]*item[1])/(item[2]*item[2]))
-            sumXX=sumXX+((item[0]*item[0])/(item[2]*item[2]))
-            sumSigma=sumSigma+(1.0/(item[2]*item[2]))
-        delta=(sumSigma*sumXX)-(sumX*sumX)
-        m=((sumSigma*sumXY)-(sumX*sumY))/delta
-        c=((sumXX*sumY)-(sumX*sumXY))/delta
-        mSigma=math.sqrt(sumSigma/delta)
-        cSigma=math.sqrt(sumXX/delta)
+            sumX = sumX + (item[0] / (item[2] * item[2]))
+            sumY = sumY + (item[1] / (item[2] * item[2]))
+            sumXY = sumXY + ((item[0] * item[1]) / (item[2] * item[2]))
+            sumXX = sumXX + ((item[0] * item[0]) / (item[2] * item[2]))
+            sumSigma = sumSigma + (1.0 / (item[2] * item[2]))
+        delta = (sumSigma * sumXX) - (sumX * sumX)
+        m = ((sumSigma * sumXY) - (sumX * sumY)) / delta
+        c = ((sumXX * sumY) - (sumX * sumXY)) / delta
+        mSigma = math.sqrt(sumSigma / delta)
+        cSigma = math.sqrt(sumXX / delta)
 
-    return {'slope':m,
-            'intercept':c,
-            'slopeError':mSigma,
-            'interceptError':cSigma}
+    return {'slope': m,
+            'intercept': c,
+            'slopeError': mSigma,
+            'interceptError': cSigma}
+
 
 #-----------------------------------------------------------------------------
-def biweightLSFit(dataList, tuningConstant, sigmaCut = None):
+def biweightLSFit(dataList, tuningConstant, sigmaCut=None):
     """Performs a weighted least squares fit, where the weights used are the
     biweight transforms of the residuals to the previous best fit .i.e. the
     procedure is iterative, and converges very quickly (iterations is set to 10
@@ -775,54 +800,54 @@ def biweightLSFit(dataList, tuningConstant, sigmaCut = None):
 
     """
 
-    dataCopy=[]
+    dataCopy = []
     for row in dataList:
         dataCopy.append(row)
 
     # First perform unweighted fit, then calculate residuals
-    results=OLSFit(dataCopy)
-    origLen=len(dataCopy)
+    results = OLSFit(dataCopy)
     for k in range(10):
-        m=results['slope']
-        c=results['intercept']
-        res=[]
+        m = results['slope']
+        c = results['intercept']
+        res = []
         for item in dataCopy:
-            res.append((m*item[0]+c)-item[1])
+            res.append((m * item[0] + c) - item[1])
 
-        if len(res)>5:
+        if len(res) > 5:
             # For clipping, trim away things >3 sigma
             # away from median
-            if sigmaCut != None:
-                absRes=[]
+            if sigmaCut is not None:
+                absRes = []
                 for item in res:
                     absRes.append(abs(item))
-                sigma=stdev(absRes)
-                count=0
+                sigma = stdev(absRes)
+                count = 0
                 for item in absRes:
-                    if item>(sigmaCut*sigma) \
-                    and len(dataCopy)>2:
+                    if item > (sigmaCut * sigma) and len(dataCopy) > 2:
                         del dataCopy[count]
                         del res[count]
 
                         # Index of datalist gets out of
                         # sync with absRes as we delete
                         # items
-                        count=count-1
+                        count -= 1
 
-                    count=count+1
+                    count += 1
 
             # Biweight transform residuals
-            weights=biweightTransform(res, tuningConstant)
+            weights = biweightTransform(res, tuningConstant)
 
             # Perform weighted fit, using biweight transforms
             # of residuals as weight
-            wData=[]
+            wData = []
             for i in range(len(dataCopy)):
-                wData.append([dataCopy[i][0], dataCopy[i][1], dataCopy[i][2], weights[i][1]])
+                wData.append([dataCopy[i][0], dataCopy[i][1], dataCopy[i][2],
+                              weights[i][1]])
 
-            results=weightedLSFit(wData, "weights")
+            results = weightedLSFit(wData, "weights")
 
     return results
+
 
 #-----------------------------------------------------------------------------
 def cumulativeBinner(data, binMin, binMax, binTotal):
@@ -840,21 +865,22 @@ def cumulativeBinner(data, binMin, binMax, binTotal):
 
     """
     #Bin data
-    binStep=float(binMax-binMin)/binTotal
-    bins=[]
-    totalItems=len(data)
+    binStep = float(binMax - binMin) / binTotal
+    bins = []
+    totalItems = len(data)
     for i in range(binTotal):
         bins.append(0)
         for item in data:
-            if item>(binMin+(i*binStep)):
-                bins[i]=bins[i]+1.0/totalItems
+            if item > (binMin + (i * binStep)):
+                bins[i] = bins[i] + 1.0 / totalItems
 
     # Gnuplot requires points at bin midpoints
-    coords=[]
+    coords = []
     for i in range(binTotal):
-        coords.append([binMin+(float(i+0.5)*binStep), bins[i]])
+        coords.append([binMin + (float(i + 0.5) * binStep), bins[i]])
 
     return coords
+
 
 #-----------------------------------------------------------------------------
 def binner(data, binMin, binMax, binTotal):
@@ -872,21 +898,22 @@ def binner(data, binMin, binMax, binTotal):
 
     """
     #Bin data
-    binStep=float(binMax-binMin)/binTotal
-    bins=[]
+    binStep = float(binMax - binMin) / binTotal
+    bins = []
     for i in range(binTotal):
         bins.append(0)
         for item in data:
-            if item>(binMin+(i*binStep)) \
-            and item<=(binMin+((i+1)*binStep)):
-                bins[i]=bins[i]+1
+            if item > (binMin + (i * binStep)) and item <= (binMin + ((i + 1) *
+                                                                      binStep)):
+                bins[i] += 1
 
     # Gnuplot requires points at bin midpoints
-    coords=[]
+    coords = []
     for i in range(binTotal):
-        coords.append([binMin+(float(i+0.5)*binStep), bins[i]])
+        coords.append([binMin + (float(i + 0.5) * binStep), bins[i]])
 
     return coords
+
 
 #-----------------------------------------------------------------------------
 def weightedBinner(data, weights, binMin, binMax, binTotal):
@@ -904,26 +931,31 @@ def weightedBinner(data, weights, binMin, binMax, binTotal):
 
     """
     #Bin data
-    binStep=float(binMax-binMin)/binTotal
-    bins=[]
+    binStep = float(binMax - binMin) / binTotal
+    bins = []
     for i in range(binTotal):
         bins.append(0.0)
         for item, weight in zip(data, weights):
-            if item>(binMin+(i*binStep)) \
-            and item<=(binMin+((i+1)*binStep)):
-                bins[i]=bins[i]+weight
+            if item > (binMin + (i * binStep)) and item <= (binMin + ((i + 1) *
+                                                                      binStep)):
+                bins[i] += weight
 
     # Gnuplot requires points at bin midpoints
-    coords=[]
+    coords = []
     for i in range(binTotal):
-        coords.append([binMin+(float(i+0.5)*binStep), bins[i]])
+        coords.append([binMin + (float(i + 0.5) * binStep), bins[i]])
 
     return coords
 
 #-----------------------------------------------------------------------------
 
-def bootstrap(data, statistic, resamples=1000, alpha=0.05, output='ci',
-        **kwargs):
+
+def bootstrap(data,
+              statistic,
+              resamples=1000,
+              alpha=0.05,
+              output='ci',
+              **kwargs):
     """ Returns the bootstrap estimate of the confidence interval for the given
     statistic. The confidence interval is given by 100*(1-alpha). Passes a 1d
     array to the function, statistic. Any arguments needed by statistic are
@@ -947,19 +979,21 @@ def bootstrap(data, statistic, resamples=1000, alpha=0.05, output='ci',
 
     """
 
-    samples = numpy.random.choice(data, size=(resamples, len(data)),
-            replace=True)
+    samples = numpy.random.choice(data,
+                                  size=(resamples, len(data)),
+                                  replace=True)
     stat = numpy.sort([statistic(row, **kwargs) for row in samples])
     if output == 'ci':
-        return (stat[int((alpha/2.0) * resamples)],
-            stat[int((1-alpha/2.0) * resamples)])
+        return (stat[int((alpha / 2.0) * resamples)],
+                stat[int((1 - alpha / 2.0) * resamples)])
     elif output == 'errorbar':
-        return (numpy.abs(statistic(data, **kwargs) - \
-                numpy.array([stat[int((alpha/2.0) * resamples)],
-                stat[int((1-alpha/2.0) * resamples)]])))
+        return (numpy.abs(statistic(data, **kwargs) -
+                numpy.array([stat[int((alpha / 2.0) * resamples)],
+                stat[int((1 - alpha / 2.0) * resamples)]])))
     else:
         raise ValueError("Output option {0} is not supported.".format(output))
 #-----------------------------------------------------------------------------
+
 
 def runningStatistic(x, y, statistic='mean', binNumber=10, **kwargs):
     """ Calculates the value given by statistic in bins of x. Useful for
@@ -989,8 +1023,8 @@ def runningStatistic(x, y, statistic='mean', binNumber=10, **kwargs):
     if type(statistic) == str:
         if statistic not in ['mean', 'median', 'sum', 'std']:
             raise ValueError('unrecognized statistic "%s"' % statistic)
-    elif callable(statistic):
-         pass
+    elif isinstance(statistic, collections.Callable):
+        pass
     else:
         raise ValueError("statistic not understood")
 
@@ -1001,28 +1035,29 @@ def runningStatistic(x, y, statistic='mean', binNumber=10, **kwargs):
 
     try:
         bins = numpy.linspace(x.min(), x.max(), binNumber)
-        centers = (bins[:-1] + bins[1:])/2.
+        centers = (bins[:-1] + bins[1:]) / 2.
         index = numpy.digitize(x, bins)
     except TypeError:
         bins = binNumber
-        centers = (bins[:-1] + bins[1:])/2.
+        centers = (bins[:-1] + bins[1:]) / 2.
         index = numpy.digitize(x, binNumber)
         binNumber = len(binNumber)
 
     if statistic == 'mean':
-        running = [numpy.mean(y[index==k]) for k in xrange(1,binNumber)]
+        running = [numpy.mean(y[index == k]) for k in range(1, binNumber)]
     elif statistic == 'median':
-        running = [numpy.median(y[index==k]) for k in xrange(1,binNumber)]
+        running = [numpy.median(y[index == k]) for k in range(1, binNumber)]
     elif statistic == 'sum':
-        running = [numpy.sum(y[index==k]) for k in xrange(1,binNumber)]
+        running = [numpy.sum(y[index == k]) for k in range(1, binNumber)]
     elif statistic == 'std':
-        running = [numpy.std(y[index==k]) for k in xrange(1,binNumber)]
-    elif callable(statistic):
-        running = [statistic(y[index==k], **kwargs) for k in
-                xrange(1,binNumber) if not len(y[index==k]) == 0]
+        running = [numpy.std(y[index == k]) for k in range(1, binNumber)]
+    elif isinstance(statistic, collections.Callable):
+        running = [statistic(y[index == k], **kwargs)
+                   for k in range(1, binNumber) if not len(y[index == k]) == 0]
     return centers, running
 
 #-----------------------------------------------------------------------------
+
 
 def slice_sampler(px, N=1, x=None):
     """ Provides N samples from a user-defined discreet distribution.
@@ -1051,23 +1086,20 @@ def slice_sampler(px, N=1, x=None):
 
     values = numpy.zeros(N, dtype=numpy.int)
     samples = numpy.arange(len(px))
-    px = numpy.array(px) / (1.*sum(px))
+    px = numpy.array(px) / (1. * sum(px))
     u = numpy.random.uniform(0, max(px))
-    for n in xrange(N):
-        included = px>=u
-        choice = sample(range(numpy.sum(included)), 1)[0]
+    for n in range(N):
+        included = px >= u
+        choice = sample(list(range(numpy.sum(included))), 1)[0]
         values[n] = samples[included][choice]
         u = numpy.random.uniform(0, px[included][choice])
 
     if len(x) == len(px):
-        x=numpy.array(x)
+        x = numpy.array(x)
         values = x[values]
     else:
-        print("px and x are different lengths. ",
-            "Returning index locations for px.")
+        print(("px and x are different lengths. ",
+               "Returning index locations for px."))
     if N == 1:
         return values[0]
     return values
-
-
-
