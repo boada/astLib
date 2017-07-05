@@ -58,7 +58,7 @@
 <h1 class="epydoc">Module astImages</h1><p class="nomargin-top"><span class="codelink"><a href="astLib.astImages-pysrc.html">source&nbsp;code</a></span></p>
 <p>module for simple .fits image tasks (rotation, clipping out sections, 
   making .pngs etc.)</p>
-  <p>(c) 2007-2013 Matt Hilton</p>
+  <p>(c) 2007-2014 Matt Hilton</p>
   <p><a href="http://astlib.sourceforge.net" 
   target="_top">http://astlib.sourceforge.net</a></p>
   <p>Some routines in this module will fail if, e.g., asked to clip a 
@@ -235,7 +235,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">dictionary</span>
+      <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -245,8 +245,8 @@
         <span class="summary-sig-arg">im2WCS</span>,
         <span class="summary-sig-arg">highAccuracy</span>=<span class="summary-sig-default">False</span>,
         <span class="summary-sig-arg">onlyOverlapping</span>=<span class="summary-sig-default">True</span>)</span><br />
-      Resamples data corresponding to second image (with data im2Data, WCS 
-      im2WCS) onto the WCS of the first image (im1Data, im1WCS).</td>
+      Resamples data corresponding to second image (with data im2Data, WCS
+im2WCS) onto the WCS of the first image (im1Data, im1WCS).</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="astLib.astImages-pysrc.html#resampleToWCS">source&nbsp;code</a></span>
             
@@ -561,7 +561,7 @@
   </dl>
 <div class="fields">      <p><strong>Note:</strong>
         Returns 'None' if the requested position is not found within the 
-        image. If the image WCS does not have keywords of the form CD1_1 
+        image. If the imaged WCS does not have keywords of the form CD1_1 
         etc., the output WCS will not be rotated.
       </p>
 </div></td></tr></table>
@@ -749,34 +749,42 @@
     </td>
   </tr></table>
   
-  <p>Resamples data corresponding to second image (with data im2Data, WCS 
-  im2WCS) onto the WCS of the first image (im1Data, im1WCS). The output, 
-  resampled image is of the pixel same dimensions of the first image. This 
-  routine is for assisting in plotting - performing photometry on the 
-  output is not recommended.</p>
-  <p>Set highAccuracy == True to sample every corresponding pixel in each 
-  image; otherwise only every nth pixel (where n is the ratio of the image 
-  scales) will be sampled, with values in between being set using a linear 
-  interpolation (much faster).</p>
-  <p>Set onlyOverlapping == True to speed up resampling by only resampling 
-  the overlapping area defined by both image WCSs.</p>
+  <pre class="literalblock">
+Resamples data corresponding to second image (with data im2Data, WCS
+im2WCS) onto the WCS of the first image (im1Data, im1WCS). The output,
+resampled image is of the pixel same dimensions of the first image. This
+routine is for assisting in plotting - performing photometry on the output
+is not recommended.
+
+Set highAccuracy == True to sample every corresponding pixel in each image;
+otherwise only every nth pixel (where n is the ratio of the image scales)
+will be sampled, with values in between being set using a linear
+interpolation (much faster).
+
+Set onlyOverlapping == True to speed up resampling by only resampling the
+overlapping area defined by both image WCSs.
+
+@type im1Data: numpy array
+@param im1Data: image data array for first image
+@type im1WCS: astWCS.WCS
+@param im1WCS: astWCS.WCS object corresponding to im1Data
+@type im2Data: numpy array
+@param im2Data: image data array for second image (to be resampled to match
+first image)
+@type im2WCS: astWCS.WCS
+@param im2WCS: astWCS.WCS object corresponding to im2Data
+@type highAccuracy: bool
+@param highAccuracy: if True, sample every corresponding pixel in each
+image; otherwise, sample
+    every nth pixel, where n = the ratio of the image scales.
+@type onlyOverlapping: bool
+@param onlyOverlapping: if True, only consider the overlapping area defined
+by both image WCSs (speeds things up)
+@rtype: dictionary
+@return: numpy image data array and associated WCS in format {'data', 'wcs'}
+
+</pre>
   <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>im1Data</code></strong> (numpy array) - image data array for first image</li>
-        <li><strong class="pname"><code>im1WCS</code></strong> (astWCS.WCS) - astWCS.WCS object corresponding to im1Data</li>
-        <li><strong class="pname"><code>im2Data</code></strong> (numpy array) - image data array for second image (to be resampled to match first
-          image)</li>
-        <li><strong class="pname"><code>im2WCS</code></strong> (astWCS.WCS) - astWCS.WCS object corresponding to im2Data</li>
-        <li><strong class="pname"><code>highAccuracy</code></strong> (bool) - if True, sample every corresponding pixel in each image; 
-          otherwise, sample every nth pixel, where n = the ratio of the 
-          image scales.</li>
-        <li><strong class="pname"><code>onlyOverlapping</code></strong> (bool) - if True, only consider the overlapping area defined by both image
-          WCSs (speeds things up)</li>
-    </ul></dd>
-    <dt>Returns: dictionary</dt>
-        <dd>numpy image data array and associated WCS in format {'data', 
-          'wcs'}</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -969,11 +977,11 @@
               linear spacing: contourLevels=['linear', min level value, max
               level value, number of levels] - can use &quot;min&quot;, 
               &quot;max&quot; to automatically set min, max levels from 
-              image data
+              image datad
             </li>
             <li>
               log spacing: contourLevels=['log', min level value, max level
-              value, number of levels] - can use &quot;min&quot;, 
+              value,number of levels] - can use &quot;min&quot;, 
               &quot;max&quot; to automatically set min, max levels from 
               image data
             </li>
@@ -1106,7 +1114,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Nov 16 15:09:30 2015
+    Generated by Epydoc 3.0.1 on Wed Jul  5 14:41:35 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -57,13 +57,6 @@
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class SED</h1><p class="nomargin-top"><span class="codelink"><a href="astLib.astSED-pysrc.html#SED">source&nbsp;code</a></span></p>
-<dl><dt>Known Subclasses:</dt>
-<dd>
-      <ul class="subclass-list">
-<li><a href="astLib.astSED.VegaSED-class.html">VegaSED</a></li>  </ul>
-</dd></dl>
-
-<hr />
 <p>This class describes a Spectral Energy Distribution (SED).</p>
   <p>To create a SED object, lists (or numpy arrays) of wavelength and 
   relative flux must be provided. The SED can optionally be redshifted. The
@@ -99,8 +92,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">wavelength</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">flux</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">wavelength</span>=<span class="summary-sig-default">[]</span>,
+        <span class="summary-sig-arg">flux</span>=<span class="summary-sig-default">[]</span>,
         <span class="summary-sig-arg">z</span>=<span class="summary-sig-default">0.0</span>,
         <span class="summary-sig-arg">ageGyr</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">normalise</span>=<span class="summary-sig-default">False</span>,
@@ -194,8 +187,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="astLib.astSED.SED-class.html#plot" class="summary-sig-name">plot</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">xmin</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">min</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">xmax</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">max</code><code class="variable-quote">'</code></span>)</span><br />
+        <span class="summary-sig-arg">xmin</span>=<span class="summary-sig-default">'min'</span>,
+        <span class="summary-sig-arg">xmax</span>=<span class="summary-sig-default">'max'</span>)</span><br />
       Produces a simple (wavelength, flux) plot of the SED.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="astLib.astSED-pysrc.html#SED.plot">source&nbsp;code</a></span>
@@ -213,8 +206,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="astLib.astSED.SED-class.html#integrate" class="summary-sig-name">integrate</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">wavelengthMin</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">min</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">wavelengthMax</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">max</code><code class="variable-quote">'</code></span>)</span><br />
+        <span class="summary-sig-arg">wavelengthMin</span>=<span class="summary-sig-default">'min'</span>,
+        <span class="summary-sig-arg">wavelengthMax</span>=<span class="summary-sig-default">'max'</span>)</span><br />
       Calculates flux in SED within given wavelength range.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="astLib.astSED-pysrc.html#SED.integrate">source&nbsp;code</a></span>
@@ -268,8 +261,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="astLib.astSED.SED-class.html#normalise" class="summary-sig-name">normalise</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">minWavelength</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">min</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">maxWavelength</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">max</code><code class="variable-quote">'</code></span>)</span><br />
+        <span class="summary-sig-arg">minWavelength</span>=<span class="summary-sig-default">'min'</span>,
+        <span class="summary-sig-arg">maxWavelength</span>=<span class="summary-sig-default">'max'</span>)</span><br />
       Normalises the SED such that the area under the specified wavelength 
       range is equal to 1.</td>
           <td align="right" valign="top">
@@ -349,7 +342,7 @@
           <td><span class="summary-sig"><a href="astLib.astSED.SED-class.html#calcMag" class="summary-sig-name">calcMag</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">passband</span>,
         <span class="summary-sig-arg">addDistanceModulus</span>=<span class="summary-sig-default">True</span>,
-        <span class="summary-sig-arg">magType</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">Vega</code><code class="variable-quote">'</code></span>)</span><br />
+        <span class="summary-sig-arg">magType</span>=<span class="summary-sig-default">&quot;Vega&quot;</span>)</span><br />
       Calculates magnitude in the given passband.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="astLib.astSED-pysrc.html#SED.calcMag">source&nbsp;code</a></span>
@@ -369,7 +362,7 @@
           <td><span class="summary-sig"><a href="astLib.astSED.SED-class.html#calcColour" class="summary-sig-name">calcColour</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">passband1</span>,
         <span class="summary-sig-arg">passband2</span>,
-        <span class="summary-sig-arg">magType</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">Vega</code><code class="variable-quote">'</code></span>)</span><br />
+        <span class="summary-sig-arg">magType</span>=<span class="summary-sig-default">&quot;Vega&quot;</span>)</span><br />
       Calculates the colour passband1-passband2.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="astLib.astSED-pysrc.html#SED.calcColour">source&nbsp;code</a></span>
@@ -540,8 +533,8 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">plot</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">xmin</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">min</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">xmax</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">max</code><code class="variable-quote">'</code></span>)</span>
+        <span class="sig-arg">xmin</span>=<span class="sig-default">'min'</span>,
+        <span class="sig-arg">xmax</span>=<span class="sig-default">'max'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astSED-pysrc.html#SED.plot">source&nbsp;code</a></span>&nbsp;
@@ -566,8 +559,8 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">integrate</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">wavelengthMin</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">min</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">wavelengthMax</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">max</code><code class="variable-quote">'</code></span>)</span>
+        <span class="sig-arg">wavelengthMin</span>=<span class="sig-default">'min'</span>,
+        <span class="sig-arg">wavelengthMax</span>=<span class="sig-default">'max'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astSED-pysrc.html#SED.integrate">source&nbsp;code</a></span>&nbsp;
@@ -643,8 +636,8 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">normalise</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">minWavelength</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">min</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">maxWavelength</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">max</code><code class="variable-quote">'</code></span>)</span>
+        <span class="sig-arg">minWavelength</span>=<span class="sig-default">'min'</span>,
+        <span class="sig-arg">maxWavelength</span>=<span class="sig-default">'max'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astSED-pysrc.html#SED.normalise">source&nbsp;code</a></span>&nbsp;
@@ -761,7 +754,7 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">calcMag</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">passband</span>,
         <span class="sig-arg">addDistanceModulus</span>=<span class="sig-default">True</span>,
-        <span class="sig-arg">magType</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">Vega</code><code class="variable-quote">'</code></span>)</span>
+        <span class="sig-arg">magType</span>=<span class="sig-default">&quot;Vega&quot;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astSED-pysrc.html#SED.calcMag">source&nbsp;code</a></span>&nbsp;
@@ -798,7 +791,7 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">calcColour</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">passband1</span>,
         <span class="sig-arg">passband2</span>,
-        <span class="sig-arg">magType</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">Vega</code><code class="variable-quote">'</code></span>)</span>
+        <span class="sig-arg">magType</span>=<span class="sig-default">&quot;Vega&quot;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="astLib.astSED-pysrc.html#SED.calcColour">source&nbsp;code</a></span>&nbsp;
@@ -905,7 +898,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Nov 16 15:09:30 2015
+    Generated by Epydoc 3.0.1 on Wed Jul  5 14:41:35 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

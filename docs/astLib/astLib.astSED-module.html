@@ -98,8 +98,8 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="astLib.astSED.TopHatPassband-class.html" class="summary-name">TopHatPassband</a><br />
-      This class generates a passband with a top hat response between the
-        given wavelengths.
+      This class generates a passband with a top hat response between the 
+      given wavelengths.
     </td>
   </tr>
 <tr>
@@ -115,8 +115,8 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="astLib.astSED.VegaSED-class.html" class="summary-name">VegaSED</a><br />
-      This class stores the SED of Vega, used for calculation of 
-        magnitudes on the Vega system.
+      This class stores the SED of Vega, used for calculation of magnitudes
+      on the Vega system.
     </td>
   </tr>
 <tr>
@@ -142,9 +142,9 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="astLib.astSED.BC03Model-class.html" class="summary-name">BC03Model</a><br />
-      This class describes a Bruzual &amp; Charlot 2003 stellar 
-        population model, extracted from a GALAXEV .ised file using the 
-        galaxevpl program that is included in GALAXEV.
+      This class describes a Bruzual &amp; Charlot 2003 stellar population 
+      model, extracted from a GALAXEV .ised file using the galaxevpl 
+      program that is included in GALAXEV.
     </td>
   </tr>
 <tr>
@@ -153,7 +153,7 @@
     </td><td class="summary">
         <a href="astLib.astSED.P09Model-class.html" class="summary-name">P09Model</a><br />
       This class describes a Percival et al 2009 (BaSTI; 
-        http://albione.oa-teramo.inaf.it) stellar population model.
+      http://albione.oa-teramo.inaf.it) stellar population model.
     </td>
   </tr>
 </table>
@@ -183,8 +183,8 @@
           <td><span class="summary-sig"><a href="astLib.astSED-module.html#makeModelSEDDictList" class="summary-sig-name">makeModelSEDDictList</a>(<span class="summary-sig-arg">modelList</span>,
         <span class="summary-sig-arg">z</span>,
         <span class="summary-sig-arg">passbandsList</span>,
-        <span class="summary-sig-arg">labelsList</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">EBMinusVList</span>=<span class="summary-sig-default"><code class="variable-group">[</code>0.0<code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">labelsList</span>=<span class="summary-sig-default">[]</span>,
+        <span class="summary-sig-arg">EBMinusVList</span>=<span class="summary-sig-default">[0.0]</span>,
         <span class="summary-sig-arg">forceYoungerThanUniverse</span>=<span class="summary-sig-default">True</span>)</span><br />
       This routine makes a list of SEDDict dictionaries (see <a 
       href="astLib.astSED-module.html#mags2SEDDict" 
@@ -231,7 +231,7 @@
         <span class="summary-sig-arg">ABMagErrs</span>,
         <span class="summary-sig-arg">passbands</span>)</span><br />
       Takes a set of corresponding AB magnitudes, uncertainties, and 
-      passbands, and returns a dictionary with keys 'flux', 'fluxErr', 
+      passbands, and returns a dictionary with keys 'flux', 'fluxErr' 
       'wavelength'.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="astLib.astSED-pysrc.html#mags2SEDDict">source&nbsp;code</a></span>
@@ -360,13 +360,6 @@
       The SED of the Sun.
     </td>
   </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'astLib'"><code class="variable-quote">'</code><code class="variable-string">astLib</code><code class="variable-quote">'</code></code>
-    </td>
-  </tr>
 </table>
 <!-- ==================== FUNCTION DETAILS ==================== -->
 <a name="section-FunctionDetails"></a>
@@ -396,8 +389,8 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">makeModelSEDDictList</span>(<span class="sig-arg">modelList</span>,
         <span class="sig-arg">z</span>,
         <span class="sig-arg">passbandsList</span>,
-        <span class="sig-arg">labelsList</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="sig-arg">EBMinusVList</span>=<span class="sig-default"><code class="variable-group">[</code>0.0<code class="variable-group">]</code></span>,
+        <span class="sig-arg">labelsList</span>=<span class="sig-default">[]</span>,
+        <span class="sig-arg">EBMinusVList</span>=<span class="sig-default">[0.0]</span>,
         <span class="sig-arg">forceYoungerThanUniverse</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -527,7 +520,7 @@
   </tr></table>
   
   <p>Takes a set of corresponding AB magnitudes, uncertainties, and 
-  passbands, and returns a dictionary with keys 'flux', 'fluxErr', 
+  passbands, and returns a dictionary with keys 'flux', 'fluxErr' 
   'wavelength'. Fluxes are in units of erg/s/cm^2/Angstrom, wavelength in 
   Angstroms. These dictionaries are the staple diet of the <a 
   href="astLib.astSED-module.html#fitSEDDict" class="link">fitSEDDict</a> 
@@ -730,7 +723,7 @@ SED(wavelength= numpy.logspace(1, 8, 1e5), flux= numpy.ones(1e6))
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Nov 16 15:09:30 2015
+    Generated by Epydoc 3.0.1 on Wed Jul  5 14:41:35 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
