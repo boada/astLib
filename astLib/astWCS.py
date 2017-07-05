@@ -2,13 +2,13 @@
 
 (c) 2007-2012 Matt Hilton
 
-(c) 2013 Matt Hilton & Steven Boada
+(c) 2013-2014 Matt Hilton & Steven Boada
 
 U{http://astlib.sourceforge.net}
 
 This is a higher level interface to some of the routines in PyWCSTools
 (distributed with astLib).
-PyWCSTools is a simple SWIG wrapping of WCSTools by Doug Mink
+PyWCSTools is a simple SWIG wrapping of WCSTools by Jessica Mink
 (U{http://tdc-www.harvard.edu/software/wcstools/}). It is intended is to make
 this interface complete enough such that direct use of PyWCSTools is
 unnecessary.
@@ -21,8 +21,17 @@ unnecessary.
 @type NUMPY_MODE: bool
 
 """
+
 #-----------------------------------------------------------------------------
-import pyfits
+
+# So far as I can tell in astropy 0.4 the API is the same as pyfits for what we need...
+try:
+    from astropy.io import fits as pyfits
+except ImportError:
+    try:
+        import pyfits
+    except ImportError:
+        raise Exception("couldn't import either pyfits or astropy.io.fits")
 from PyWCSTools import wcs
 import numpy
 import locale
@@ -35,10 +44,10 @@ NUMPY_MODE = True
 # libwcs)
 lconv = locale.localeconv()
 if lconv['decimal_point'] != '.':
-    print(
-        "WARNING: decimal point separator is not '.' - astWCS coordinate conversions will not work.")
-    print(
-        "Workaround: after importing any modules that set the locale (e.g. matplotlib) do the following:")
+    print("WARNING: decimal point separator is not '.' - astWCS coordinate "
+          "conversions will not work.")
+    print("Workaround: after importing any modules that set the locale (e.g. "
+          "matplotlib) do the following:")
     print("   import locale")
     print("   locale.setlocale(locale.LC_NUMERIC, 'C')")
 
@@ -61,10 +70,18 @@ class WCS:
 
     """
 
-    def __init__(self, headerSource, extensionName=0, mode="image"):
+    def __init__(self,
+                 headerSource,
+                 extensionName=0,
+                 mode="image",
+                 zapKeywords=[]):
         """Creates a WCS object using either the information contained in the
         header of the specified .fits image, or from a pyfits.header object.
         Set mode = "pyfits" if the headerSource is a pyfits.header.
+
+        For some images from some archives, particular header keywords such as
+        COMMENT or HISTORY may contain unprintable strings. If you encounter
+        this, try setting zapKeywords = ['COMMENT', 'HISTORY'] (for example).
 
         @type headerSource: string or pyfits.header
         @param headerSource: filename of input .fits image, or a pyfits.header
@@ -75,6 +92,9 @@ class WCS:
         @type mode: string
         @param mode: set to "image" if headerSource is a .fits file name, or
             set to "pyfits" if headerSource is a pyfits.header object
+        @type zapKeywords: list
+        @param: zapKeywords: keywords to remove from the header before making
+            astWCS object.
 
         @note: The meta data provided by headerSource is stored in WCS.header
             as a pyfits.header object.
@@ -87,11 +107,22 @@ class WCS:
 
         if self.mode == "image":
             img = pyfits.open(self.headerSource)
+            # silentfix below won't deal with unprintable strings
+            # so here we optionally remove problematic keywords
+            for z in zapKeywords:
+                if z in img[self.extensionName].header.keys():
+                    for count in range(img[self.extensionName].header.count(
+                            z)):
+                        img[self.extensionName].header.remove(z)
             img.verify(
                 'silentfix')  # solves problems with non-standard headers
             self.header = img[self.extensionName].header
             img.close()
         elif self.mode == "pyfits":
+            for z in zapKeywords:
+                if z in self.headerSource.keys():
+                    for count in range(self.headerSource.count(z)):
+                        self.headerSource.remove(z)
             self.header = headerSource
 
         self.updateFromHeader()
@@ -120,25 +151,22 @@ class WCS:
 
         """
 
-        # Take out any problematic overly long header keyword values before
-        # creating the WCSStructure, as these cause problems for WCSTools
-        cardList = pyfits.CardList()
-        for i in list(self.header.items()):
+        # Updated for pyfits 3.1+
+        newHead = pyfits.Header()
+        for i in self.header.items():
             if len(str(i[1])) < 70:
                 if len(str(i[0])) <= 8:
-                    cardList.append(pyfits.Card(i[0], i[1]))
+                    newHead.append((i[0], i[1]))
                 else:
-                    cardList.append(pyfits.Card('HIERARCH ' + i[0], i[1]))
-        newHead = pyfits.Header(cards=cardList)
+                    newHead.append(('HIERARCH ' + i[0], i[1]))
 
         # Workaround for ZPN bug when PV2_3 == 0 (as in, e.g., ESO WFI images)
         if "PV2_3" in list(newHead.keys()) and newHead[
                 'PV2_3'] == 0 and newHead['CTYPE1'] == 'RA---ZPN':
-            newHead.update("PV2_3", 1e-15)
+            newHead["PV2_3"] = 1e-15
 
-        cardlist = newHead.ascard  # Changed for pyfits 3.0+
         cardstring = ""
-        for card in cardlist:
+        for card in newHead.cards:
             cardstring = cardstring + str(card)
 
         self.WCSStructure = wcs.wcsinit(cardstring)
