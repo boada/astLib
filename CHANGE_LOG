@@ -1,5 +1,33 @@
 CHANGE LOG:
 
+VERSION 0.9.0
+-------------
+
+* A bug fix release, primarily for compatibility with numpy 1.12+ and pyfits 3.4.
+  No new features added.
+
+VERSION 0.8.0
+-------------
+
+* Upgraded underlying wcssubs to version 3.8.7, and added a bug fix for repeat runs
+  of coord conversion encountered when using images with polynomial distortion 
+  coefficients (thanks to Ralf Kotulla; this error not reproduced on Kubuntu). 
+  
+* Some updates to avoid using deprecated features in pyfits (so now require 
+  pyfits 3.3 or astropy 0.4) and matplotlib.
+
+* Added zapKeywords option when creating WCS objects in astWCS - this can help in
+  dealing with some malformed FITS headers (the usual culprits are COMMENT or
+  HISTORY keywords with unprintable characters).
+
+* Fixed an index bug in MAD, median that affected biweightScale, biweightLocation 
+  calculations in astStats (small shift in values that ought to be insignificant in
+  to any result that relies on the use of the biweight).
+ 
+* Some improvements in astCalc (using scipy for integration, tl2z and tz2z now throw
+  exceptions for negative values).
+
+
 VERSION 0.7.0
 -------------
 

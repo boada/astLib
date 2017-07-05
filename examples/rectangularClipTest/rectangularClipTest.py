@@ -10,8 +10,8 @@ import pyfits
 from astLib import *
 
 # Regular clipping rputines test
-img = pyfits.open("../../../../testingData/testImage3.fits")
-wcs = astWCS.WCS("../../../../testingData/testImage3.fits")
+img = pyfits.open("../../../testingData/testImage3.fits")
+wcs = astWCS.WCS("../../../testingData/testImage3.fits")
 d = img[0].data
 
 RADeg, decDeg = wcs.getCentreWCSCoords()
@@ -31,8 +31,8 @@ astImages.saveFITS("output_notRotated.fits", clipnr['data'], clipnr['wcs'])
 astImages.saveFITS("output_pixelCoords.fits", clippix, None)
 
 # RA, dec coords clipping routine
-img = pyfits.open("../../../../testingData/testCEAImage.fits")
-wcs = astWCS.WCS("../../../../testingData/testCEAImage.fits")
+img = pyfits.open("../../../testingData/testCEAImage.fits")
+wcs = astWCS.WCS("../../../testingData/testCEAImage.fits")
 d = img[0].data
 clip = astImages.clipUsingRADecCoords(img[0].data, wcs, 30.0, 50.0, -55.0,
         -50.0)

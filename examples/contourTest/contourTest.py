@@ -11,8 +11,8 @@ from astLib import *
 import pylab
 import numpy
 
-TEST_IMAGE = "../../../../testingData/testImage2.fits"
-TEST_CONTOUR_IMAGE = "../../../../testingData/testXRayImage.fits"
+TEST_IMAGE = "../../../testingData/testImage2.fits"
+TEST_CONTOUR_IMAGE = "../../../testingData/testXRayImage.fits"
 
 img = pyfits.open(TEST_IMAGE)
 wcs = astWCS.WCS(TEST_IMAGE)

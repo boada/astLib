@@ -8,8 +8,7 @@ U{http://astlib.sourceforge.net}
 
 The focus in this module is at present on calculations of distances in a given
 cosmology. The parameters for the cosmological model are set using the
-variables OMEGA_M0, OMEGA_L0, OMEGA_R0, H0 in the module namespace (see below
-for details).
+variables OMEGA_M0, OMEGA_L0, OMEGA_R0, H0 in the module namespace (see below for details).
 
 @var OMEGA_M0: The matter density parameter at z=0.
 @type OMEGA_M0: float
@@ -30,19 +29,18 @@ for details).
 
 """
 
-import math
-try:
-    from scipy import integrate
-except ImportError:
-    print("WARNING: astCalc failed to import scipy modules - ", )
-    print("some functions will not work")
-
 OMEGA_M0 = 0.3
 OMEGA_L0 = 0.7
 OMEGA_R0 = 8.24E-5
 H0 = 70.0
 
 C_LIGHT = 3.0e5
+
+import math
+try:
+    from scipy import integrate
+except ImportError:
+    print("WARNING: astCalc failed to import scipy modules - some functions will not work")
 
 #------------------------------------------------------------------------------
 def dl(z):
@@ -56,10 +54,9 @@ def dl(z):
     """
 
     DM = dm(z)
-    DL = (1.0 + z) * DM
+    DL = (1.0+z)*DM
 
     return DL
-
 
 #------------------------------------------------------------------------------
 def da(z):
@@ -72,10 +69,9 @@ def da(z):
 
     """
     DM = dm(z)
-    DA = DM / (1.0 + z)
+    DA = DM/(1.0+z)
 
     return DA
-
 
 #------------------------------------------------------------------------------
 def dm(z):
@@ -89,32 +85,28 @@ def dm(z):
 
     """
 
-    def _yn(x):
-        # Function to be integrated
-        return (1.0 / math.sqrt(OMEGA_M0 * x + OMEGA_L0 * math.pow(x, 4) +
-                                OMEGA_K * math.pow(x, 2)))
-
     OMEGA_K = 1.0 - OMEGA_M0 - OMEGA_L0
 
     # Integration limits
     xMax = 1.0
     xMin = 1.0 / (1.0 + z)
 
-    integralValue, integralError = integrate.quad(_yn, xMin, xMax)
+    # Function to be integrated
+    yn = lambda x: (1.0/math.sqrt(OMEGA_M0*x + OMEGA_L0*math.pow(x, 4) +
+            OMEGA_K*math.pow(x, 2)))
+
+    integralValue, integralError = integrate.quad(yn, xMin, xMax)
 
     if OMEGA_K > 0.0:
-        DM = (C_LIGHT / H0 * math.pow(
-            abs(OMEGA_K), -0.5) *
-              math.sinh(math.sqrt(abs(OMEGA_K)) * integralValue))
+        DM = (C_LIGHT/H0 * math.pow(abs(OMEGA_K), -0.5) *
+            math.sinh(math.sqrt(abs(OMEGA_K)) * integralValue))
     elif OMEGA_K == 0.0:
-        DM = C_LIGHT / H0 * integralValue
+        DM = C_LIGHT/H0 * integralValue
     elif OMEGA_K < 0.0:
-        DM = (C_LIGHT / H0 * math.pow(
-            abs(OMEGA_K), -0.5) *
-              math.sin(math.sqrt(abs(OMEGA_K)) * integralValue))
+        DM = (C_LIGHT/H0 * math.pow(abs(OMEGA_K), -0.5) *
+            math.sin(math.sqrt(abs(OMEGA_K)) * integralValue))
 
     return DM
-
 
 #------------------------------------------------------------------------------
 def dc(z):
@@ -126,10 +118,6 @@ def dc(z):
     @return: transverse comoving distance (proper motion distance) in Mpc
 
     """
-    def _yn(x):
-        # Function to be integrated
-        return (1.0 / math.sqrt(OMEGA_M0 * x + OMEGA_L0 * math.pow(x, 4) +
-                                OMEGA_K * math.pow(x, 2)))
 
     OMEGA_K = 1.0 - OMEGA_M0 - OMEGA_L0
 
@@ -137,19 +125,20 @@ def dc(z):
     xMax = 1.0
     xMin = 1.0 / (1.0 + z)
 
-    integralValue, integralError = integrate.quad(_yn, xMin, xMax)
+    # Function to be integrated
+    yn = lambda x: (1.0/math.sqrt(OMEGA_M0*x + OMEGA_L0*math.pow(x, 4) +
+            OMEGA_K*math.pow(x, 2)))
 
-    DC = C_LIGHT / H0 * integralValue
+    integralValue, integralError = integrate.quad(yn, xMin, xMax)
+
+    DC= C_LIGHT/H0*integralValue
 
     return DC
-
 
 #------------------------------------------------------------------------------
 def dVcdz(z):
     """Calculates the line of sight comoving volume element per steradian dV/dz
-    at redshift z. The unit is Mpc^3/sr. To find the total volume of the
-    universe integrate this function between two redshifts and multiply by the
-    total area of the sky, 4pi steradians.
+    at redshift z.
 
     @type z: float
     @param z: redshift
@@ -158,11 +147,10 @@ def dVcdz(z):
 
     """
 
-    dH = C_LIGHT / H0
-    dVcdz = (dH * (math.pow(da(z), 2)) * (math.pow(1 + z, 2)) / Ez(z))
+    dH = C_LIGHT/H0
+    dVcdz=(dH*(math.pow(da(z),2))*(math.pow(1+z,2))/Ez(z))
 
     return dVcdz
-
 
 #------------------------------------------------------------------------------
 def dl2z(distanceMpc):
@@ -188,23 +176,22 @@ def dl2z(distanceMpc):
         zMax = zMax + 5.0
         diff = dl(zMax) - dTarget
 
-    zTrial = zMin + (zMax - zMin) / 2.0
+    zTrial = zMin + (zMax-zMin)/2.0
 
     dTrial = dl(zTrial)
     diff = dTrial - dTarget
     while abs(diff) > toleranceMpc:
 
         if diff > 0:
-            zMax = zMax - (zMax - zMin) / 2.0
+            zMax = zMax - (zMax-zMin)/2.0
         else:
-            zMin = zMin + (zMax - zMin) / 2.0
+            zMin = zMin + (zMax-zMin)/2.0
 
-        zTrial = zMin + (zMax - zMin) / 2.0
+        zTrial = zMin + (zMax-zMin)/2.0
         dTrial = dl(zTrial)
         diff = dTrial - dTarget
 
     return zTrial
-
 
 #------------------------------------------------------------------------------
 def dc2z(distanceMpc):
@@ -230,23 +217,22 @@ def dc2z(distanceMpc):
         zMax = zMax + 5.0
         diff = dc(zMax) - dTarget
 
-    zTrial = zMin + (zMax - zMin) / 2.0
+    zTrial = zMin + (zMax-zMin)/2.0
 
     dTrial = dc(zTrial)
     diff = dTrial - dTarget
     while abs(diff) > toleranceMpc:
 
         if diff > 0:
-            zMax = zMax - (zMax - zMin) / 2.0
+            zMax = zMax - (zMax-zMin)/2.0
         else:
-            zMin = zMin + (zMax - zMin) / 2.0
+            zMin = zMin + (zMax-zMin)/2.0
 
-        zTrial = zMin + (zMax - zMin) / 2.0
+        zTrial = zMin + (zMax-zMin)/2.0
         dTrial = dc(zTrial)
         diff = dTrial - dTarget
 
     return zTrial
-
 
 #------------------------------------------------------------------------------
 def t0():
@@ -258,23 +244,21 @@ def t0():
 
     """
 
-    def _yn(x):
-        # Function to be integrated
-        return (1.0 / math.sqrt(OMEGA_M0 * x + OMEGA_L0 * math.pow(x, 4) +
-                                OMEGA_K * math.pow(x, 2)))
-
     OMEGA_K = 1.0 - OMEGA_M0 - OMEGA_L0
 
     # Integration limits
     xMax = 1.0
     xMin = 0
 
-    integralValue, integralError = integrate.quad(_yn, xMin, xMax)
+    # Function to be integrated
+    yn = lambda x: (x/math.sqrt(OMEGA_M0*x + OMEGA_L0*math.pow(x, 4) +
+            OMEGA_K*math.pow(x, 2)))
 
-    T0 = (1.0 / H0 * integralValue * 3.08e19) / 3.16e7 / 1e9
+    integralValue, integralError = integrate.quad(yn, xMin, xMax)
+
+    T0 = (1.0/H0*integralValue*3.08e19)/3.16e7/1e9
 
     return T0
-
 
 #------------------------------------------------------------------------------
 def tl(z):
@@ -287,24 +271,21 @@ def tl(z):
     @return: lookback time in Gyr to redshift z
 
     """
-
-    def _yn(x):
-        # Function to be integrated
-        return (1.0 / math.sqrt(OMEGA_M0 * x + OMEGA_L0 * math.pow(x, 4) +
-                                OMEGA_K * math.pow(x, 2)))
-
     OMEGA_K = 1.0 - OMEGA_M0 - OMEGA_L0
 
     # Integration limits
     xMax = 1.0
-    xMin = 1. / (1. + z)
+    xMin = 1./(1.+z)
 
-    integralValue, integralError = integrate.quad(_yn, xMin, xMax)
+    # Function to be integrated
+    yn = lambda x: (x/math.sqrt(OMEGA_M0*x + OMEGA_L0*math.pow(x, 4) +
+            OMEGA_K*math.pow(x, 2)))
 
-    T0 = (1.0 / H0 * integralValue * 3.08e19) / 3.16e7 / 1e9
+    integralValue, integralError = integrate.quad(yn, xMin, xMax)
+
+    T0 = (1.0/H0*integralValue*3.08e19)/3.16e7/1e9
 
     return T0
-
 
 #------------------------------------------------------------------------------
 def tz(z):
@@ -322,7 +303,6 @@ def tz(z):
 
     return TZ
 
-
 #------------------------------------------------------------------------------
 def tl2z(tlGyr):
     """Calculates the redshift z corresponding to lookback time tlGyr given in
@@ -332,9 +312,9 @@ def tl2z(tlGyr):
     @param tlGyr: lookback time in Gyr
     @rtype: float
     @return: redshift
-
+    
     @note: Raises ValueError if tlGyr is not positive.
-
+    
     """
     if tlGyr < 0.:
         raise ValueError('Lookback time must be positive')
@@ -351,23 +331,22 @@ def tl2z(tlGyr):
         zMax = zMax + 5.0
         diff = tl(zMax) - tTarget
 
-    zTrial = zMin + (zMax - zMin) / 2.0
+    zTrial = zMin + (zMax-zMin)/2.0
 
     tTrial = tl(zTrial)
     diff = tTrial - tTarget
     while abs(diff) > toleranceGyr:
 
         if diff > 0:
-            zMax = zMax - (zMax - zMin) / 2.0
+            zMax = zMax - (zMax-zMin)/2.0
         else:
-            zMin = zMin + (zMax - zMin) / 2.0
+            zMin = zMin + (zMax-zMin)/2.0
 
-        zTrial = zMin + (zMax - zMin) / 2.0
+        zTrial = zMin + (zMax-zMin)/2.0
         tTrial = tl(zTrial)
         diff = tTrial - tTarget
 
     return zTrial
-
 
 #------------------------------------------------------------------------------
 def tz2z(tzGyr):
@@ -378,7 +357,7 @@ def tz2z(tzGyr):
     @param tzGyr: age of the universe in Gyr
     @rtype: float
     @return: redshift
-
+    
     @note: Raises ValueError if Universe age not positive
 
     """
@@ -388,7 +367,6 @@ def tz2z(tzGyr):
     z = tl2z(tl)
 
     return z
-
 
 #------------------------------------------------------------------------------
 def absMag(appMag, distMpc):
@@ -403,10 +381,9 @@ def absMag(appMag, distMpc):
     @return: absolute magnitude of object
 
     """
-    absMag = appMag - (5.0 * math.log10(distMpc * 1.0e5))
+    absMag = appMag - (5.0*math.log10(distMpc*1.0e5))
 
     return absMag
-
 
 #------------------------------------------------------------------------------
 def Ez(z):
@@ -425,7 +402,6 @@ def Ez(z):
 
     return Ez
 
-
 #------------------------------------------------------------------------------
 def Ez2(z):
     """Calculates the value of E(z)^2, which describes evolution of the Hubble
@@ -442,11 +418,12 @@ def Ez2(z):
     # same for all redshifts below 10. But above that, the radiation term
     # begins to dominate. From Peebles 1993.
 
-    Ez2 = (OMEGA_R0 * math.pow(1.0 + z, 4) + OMEGA_M0 * math.pow(1.0 + z, 3) +
-           (1.0 - OMEGA_M0 - OMEGA_L0) * math.pow(1.0 + z, 2) + OMEGA_L0)
+    Ez2 = (OMEGA_R0 * math.pow(1.0+z, 4) +
+        OMEGA_M0* math.pow(1.0+z, 3) +
+        (1.0- OMEGA_M0- OMEGA_L0) *
+        math.pow(1.0+z, 2) + OMEGA_L0)
 
     return Ez2
-
 
 #------------------------------------------------------------------------------
 def OmegaMz(z):
@@ -461,10 +438,9 @@ def OmegaMz(z):
     """
     ez2 = Ez2(z)
 
-    Omega_Mz = (OMEGA_M0 * math.pow(1.0 + z, 3)) / ez2
+    Omega_Mz = (OMEGA_M0*math.pow(1.0+z, 3))/ez2
 
     return Omega_Mz
-
 
 #------------------------------------------------------------------------------
 def OmegaLz(z):
@@ -478,8 +454,7 @@ def OmegaLz(z):
     """
     ez2 = Ez2(z)
 
-    return OMEGA_L0 / ez2
-
+    return OMEGA_L0/ez2
 
 #------------------------------------------------------------------------------
 def OmegaRz(z):
@@ -493,8 +468,7 @@ def OmegaRz(z):
     """
     ez2 = Ez2(z)
 
-    return OMEGA_R0 * math.pow(1 + z, 4) / ez2
-
+    return OMEGA_R0*math.pow(1+z, 4)/ez2
 
 #------------------------------------------------------------------------------
 def DeltaVz(z):
@@ -517,12 +491,11 @@ def DeltaVz(z):
 
     if OMEGA_K == 0.0:
         Omega_Mz = OmegaMz(z)
-        deltaVz = (18.0 * math.pow(math.pi, 2) + 82.0 *
-                   (Omega_Mz - 1.0) - 39.0 * math.pow(Omega_Mz - 1, 2))
+        deltaVz = (18.0*math.pow(math.pi, 2)+82.0*(Omega_Mz-1.0)-39.0 *
+                math.pow(Omega_Mz-1, 2))
         return deltaVz
     else:
         raise Exception("cosmology is NOT flat.")
-
 
 #------------------------------------------------------------------------------
 def RVirialXRayCluster(kT, z, betaT):
@@ -550,17 +523,15 @@ def RVirialXRayCluster(kT, z, betaT):
 
     if OMEGA_K == 0.0:
         Omega_Mz = OmegaMz(z)
-        deltaVz = (18.0 * math.pow(math.pi, 2) + 82.0 *
-                   (Omega_Mz - 1.0) - 39.0 * math.pow(Omega_Mz - 1, 2))
-        deltaz = (deltaVz * OMEGA_M0) / (18.0 * math.pow(math.pi, 2) *
-                                         Omega_Mz)
+        deltaVz = (18.0 * math.pow(math.pi, 2) + 82.0 * (Omega_Mz-1.0)- 39.0 *
+                math.pow(Omega_Mz-1, 2))
+        deltaz = (deltaVz*OMEGA_M0)/(18.0*math.pow(math.pi, 2)*Omega_Mz)
 
         # The equation quoted in Arnaud, Aghanim & Neumann is for h50, so need
         # to scale it
-        h50 = H0 / 50.0
-        Rv = (3.80 * math.sqrt(betaT) * math.pow(deltaz, -0.5) *
-              math.pow(1.0 + z,
-                       (-3.0 / 2.0)) * math.sqrt(kT / 10.0) * (1.0 / h50))
+        h50 = H0/50.0
+        Rv = (3.80*math.sqrt(betaT)*math.pow(deltaz, -0.5) *
+            math.pow(1.0+z, (-3.0/2.0)) * math.sqrt(kT/10.0)*(1.0/h50))
 
         return Rv
 
@@ -568,3 +539,4 @@ def RVirialXRayCluster(kT, z, betaT):
         raise Exception("cosmology is NOT flat.")
 
 #------------------------------------------------------------------------------
+

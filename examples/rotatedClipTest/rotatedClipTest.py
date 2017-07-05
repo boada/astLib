@@ -9,8 +9,8 @@
 import pyfits
 from astLib import *
 
-img = pyfits.open("../../../../testingData/testImage1.fits")
-wcs = astWCS.WCS("../../../../testingData/testImage1.fits")
+img = pyfits.open("../../../testingData/testImage1.fits")
+wcs = astWCS.WCS("../../../testingData/testImage1.fits")
 d = img[0].data
 
 # Clip slightly off centre

@@ -18,7 +18,7 @@ sLabels = []
 pRAs = []
 pDecs = []
 pLabels = []
-inFile = open("../../../../testingData/testData.csv", "r")
+inFile = open("../../../testingData/testData.csv", "r")
 lines = inFile.readlines()
 for line in lines:
     if line[0] != "#":
@@ -38,10 +38,10 @@ for line in lines:
 inFile.close()
 
 # Load the images - these have to be aligned to pixel and same pixel dimensions
-rimg = pyfits.open("../../../../testingData/testImageR.fits")
-gimg = pyfits.open("../../../../testingData/testImageG.fits")
-bimg = pyfits.open("../../../../testingData/testImageB.fits")
-wcs = astWCS.WCS("../../../../testingData/testImageR.fits")
+rimg = pyfits.open("../../../testingData/testImageR.fits")
+gimg = pyfits.open("../../../testingData/testImageG.fits")
+bimg = pyfits.open("../../../testingData/testImageB.fits")
+wcs = astWCS.WCS("../../../testingData/testImageR.fits")
 r = rimg[0].data
 g = gimg[0].data
 b = bimg[0].data
@@ -49,8 +49,8 @@ rCut = [-50, 1000]
 gCut = [-50, 1000]
 bCut = [-50, 800]
 
-ximg = pyfits.open("../../../../testingData/testXRayImage.fits")
-xwcs = astWCS.WCS("../../../../testingData/testXRayImage.fits")
+ximg = pyfits.open("../../../testingData/testXRayImage.fits")
+xwcs = astWCS.WCS("../../../testingData/testXRayImage.fits")
 x = ximg[0].data
 cLevels = [2e-05, 2.517e-05, 3.16764e-05, 3.98647e-05, 5.01697e-05,
             6.31385e-05, 7.94597e-05, 0.0001]

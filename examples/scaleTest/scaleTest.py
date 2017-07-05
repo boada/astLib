@@ -9,7 +9,7 @@
 from astLib import *
 import pyfits
 
-TEST_IMAGE = "../../../../testingData/testImage1.fits"
+TEST_IMAGE = "../../../testingData/testImage1.fits"
 
 img = pyfits.open(TEST_IMAGE)
 wcs = astWCS.WCS(TEST_IMAGE)

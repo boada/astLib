@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+#File: MStarEvolution/MStarEvolution.py
+#Created: Sat Dec 15 17:06:36 2012
+#Last Change: Sat Dec 15 17:08:15 2012
 # -*- coding: utf-8 -*-
 #
 # Calculates evolution of the characteristic magnitude M* in the galaxy
@@ -9,8 +12,8 @@ from astLib import astSED
 import numpy
 import pylab
 
-bc03 = astSED.BC03Model("../../../../testingData/models/tau0p1Gyr_m62.1")
-K = astSED.Passband("../../../../testingData/filters/K_2MASS.res")
+bc03 = astSED.BC03Model("../../../testingData/models/tau0p1Gyr_m62.1")
+K = astSED.Passband("../../../testingData/filters/K_2MASS.res")
 
 DP99Mags = [14.84, 15.16, 15.64, 15.74, 16.50, 16.38, 16.85, 17.57, 17.51,
             18.05]
