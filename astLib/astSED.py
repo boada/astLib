@@ -1471,7 +1471,7 @@ def Jy2Mag(fluxJy):
 VEGA = VegaSED()
 
 # AB SED has constant flux density 3631 Jy
-AB = SED(wavelength=numpy.logspace(1, 8, 1e5), flux=numpy.ones(1e6))
+AB = SED(wavelength=numpy.logspace(1, 8, 1e5), flux=numpy.ones(int(1e6)))
 AB.flux = (3e-5 * 3631) / (AB.wavelength**2)
 AB.z0flux = AB.flux[:]
 
