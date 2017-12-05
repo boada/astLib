@@ -299,8 +299,8 @@ class WCS:
         @return: WCS coordinates in format [RADeg, decDeg]
 
         """
-        if type(x) == numpy.ndarray or type(x) == list:
-            if type(y) == numpy.ndarray or type(y) == list:
+        if isinstance(x, (list, numpy.ndarray)):
+            if isinstance(y, (list, numpy.ndarray)):
                 WCSCoords = []
                 for xc, yc in zip(x, y):
                     if NUMPY_MODE:
