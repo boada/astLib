@@ -311,6 +311,16 @@ def calcAngSepDeg(RADeg1, decDeg1, RADeg2, decDeg2):
     @return: angular separation in decimal degrees
 
     """
+
+    if not isinstance(RADeg1, float):
+        RADeg1 = hms2decimal(RADeg1, ':')
+    if not isinstance(decDeg1, float):
+        decDeg1 = dms2decimal(decDeg1, ':')
+    if not isinstance(RADeg2, float):
+        RADeg2 = hms2decimal(RADeg2, ':')
+    if not isinstance(decDeg2, float):
+        decDeg2 = dms2decimal(decDeg2, ':')
+
     cRA = numpy.radians(RADeg1)
     cDec = numpy.radians(decDeg1)
 

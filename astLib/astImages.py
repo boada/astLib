@@ -131,8 +131,15 @@ def clipImageSectionWCS(imageData,
             clippedWCS = imageWCS.copy()
             clippedWCS.header['NAXIS1'] = clippedData.shape[1]
             clippedWCS.header['NAXIS2'] = clippedData.shape[0]
-            clippedWCS.header['CRPIX1'] = oldCRPIX1 - X[0]
-            clippedWCS.header['CRPIX2'] = oldCRPIX2 - Y[0]
+            try:
+                clippedWCS.header['CRPIX1'] = oldCRPIX1 - X[0]
+            except TypeError:
+                clippedWCS.header['CRPIX1'] = float(oldCRPIX1) - X[0]
+            try:
+                clippedWCS.header['CRPIX2'] = oldCRPIX2 - Y[0]
+            except TypeError:
+                clippedWCS.header['CRPIX2'] = float(oldCRPIX2) - Y[0]
+
             clippedWCS.updateFromHeader()
 
         except KeyError:
